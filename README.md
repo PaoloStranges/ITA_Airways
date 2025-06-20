@@ -13,8 +13,8 @@ Progettare un sistema di gestione dati a supporto del processo di **vendita dei 
 
 ## 📂 Contenuto
 
-- `ITA_Airways_DB_dump.sql.gz`  
-  → Dump completo del database (schema e dati di esempio), compatibile con **SQLite**.
+- `ITA_Airways_DB_dump.sql`: file SQL contenente la struttura del database, dati di esempio e query di test.
+- `README.md`: istruzioni per l'importazione e l'utilizzo del database.
 
 ## 🧰 Requisiti
 
