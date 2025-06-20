@@ -23,9 +23,16 @@ Progettare un sistema di gestione dati a supporto del processo di **vendita dei 
 
 ## 🛠️ Istruzioni per l'uso
 
-1. Scarica e decomprimi il file `ITA_Airways_DB_dump.sql.gz`.
-2. Apri il file `.sql` con il tuo editor SQL preferito o importalo tramite un'interfaccia grafica (es. DB Browser for SQLite).
-3. Esegui le query di test (già incluse nel file `.sql`) per verificare la struttura e i dati.
+1. Scarica il file **`ITA_Airways_DB_dump.sql`** da questo repository.
+2. Apri il file con il tuo editor o tool SQL preferito, ad esempio:
+   - **DB Browser for SQLite**
+   - **SQLiteStudio**
+   - **DBeaver**
+   - o direttamente da terminale con `sqlite3`.
+3. Esegui l’intero script per:
+   - creare le tabelle;
+   - inserire i dati;
+   - eseguire le **5 query SQL** richieste nel project work.
 
 ## ✅ Query SQL di esempio
 
