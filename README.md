@@ -45,8 +45,8 @@ Il progetto include query per:
 
 ## 📘 Autore
 
-- Nome: *[Paolo Stranges]*
-- Matricola: *[0312201143]*
+- Nome: *Paolo Stranges*
+- Matricola: *0312201143*
 - Università: *Universita Telematica Pegaso*
 - Corso: *Informatica per le Aziende Digitali (L-31)*
 
