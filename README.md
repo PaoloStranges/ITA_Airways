@@ -13,7 +13,7 @@ Progettare uno **schema di persistenza dei dati** a supporto del processo di **v
 
 ## 📂 Contenuto del repository
 
-- `schema_arricchito.sql`: file SQL aggiornato con struttura relazionale, dati descrittivi e query di test.
+- `ITA_Airways_DB_script.sql`: file SQL aggiornato con struttura relazionale, dati descrittivi e query di test.
 - `README.md`: guida completa per importazione, utilizzo e test del database.
 - (Facoltativo) `schema_originale.sql`: versione semplificata dello script per confronto.
 
