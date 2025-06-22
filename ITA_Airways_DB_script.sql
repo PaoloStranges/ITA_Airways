@@ -76,30 +76,30 @@ INSERT INTO Prenotazione_Volo (IDPrenotazione, IDVolo, PostoAssegnato) VALUES
 
 -- SIMULAZIONI DI INPUT UTENTE
 
--- 👤 Simulazione: Nuovo cliente che si registra
+-- Simulazione: Nuovo cliente che si registra
 INSERT INTO Cliente (Nome, Cognome, Email, Telefono, DataNascita)
 VALUES ('Giulia', 'Verdi', 'giulia.verdi@email.it', '3409876543', '1992-12-12');
 
--- 🧾 Simulazione: Cliente Giulia effettua una prenotazione per il volo 1
+-- Simulazione: Cliente Giulia effettua una prenotazione per il volo 1
 INSERT INTO Prenotazione (IDCliente, DataPrenotazione, MetodoPagamento, ImportoTotale)
 VALUES (3, '2025-06-22', 'Bonifico', 160.00);
 
--- ✈️ Simulazione: Assegnazione posto a Giulia sul volo 1
+-- Simulazione: Assegnazione posto a Giulia sul volo 1
 INSERT INTO Prenotazione_Volo (IDPrenotazione, IDVolo, PostoAssegnato)
 VALUES (3, 1, '14B');
 
--- 🔍 Simulazione: Ricerca di tutti i voli con partenza da Roma il 15 luglio
+-- Simulazione: Ricerca di tutti i voli con partenza da Roma il 15 luglio
 SELECT V.IDVolo, V.DataOraPartenza, V.DataOraArrivo
 FROM Volo V
 JOIN Aeroporto A ON V.IDAeroportoPartenza = A.IDAeroporto
 WHERE A.Città = 'Roma' AND DATE(V.DataOraPartenza) = '2025-07-15';
 
--- 🔍 Simulazione: Elenco passeggeri del volo 1
+-- Simulazione: Elenco passeggeri del volo 1
 SELECT C.Nome, C.Cognome
 FROM Cliente C
 JOIN Prenotazione P ON C.IDCliente = P.IDCliente
 JOIN Prenotazione_Volo PV ON P.IDPrenotazione = PV.IDPrenotazione
 WHERE PV.IDVolo = 1;
 
--- 🔍 Simulazione: Prenotazioni effettuate dopo il 21 giugno
+-- Simulazione: Prenotazioni effettuate dopo il 21 giugno
 SELECT * FROM Prenotazione WHERE DataPrenotazione > '2025-06-21';
