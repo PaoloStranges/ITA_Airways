@@ -48,7 +48,7 @@ CREATE TABLE Prenotazione_Volo (
     PRIMARY KEY (IDPrenotazione, IDVolo)
 );
 
--- INSERIMENTO DATI DI ESEMPIO
+-- INSERIMENTO DATI INIZIALI
 
 INSERT INTO Cliente (Nome, Cognome, Email, Telefono, DataNascita) VALUES
 ('Mario', 'Rossi', 'mario.rossi@email.it', '3401234567', '1980-05-20'),
@@ -74,46 +74,32 @@ INSERT INTO Prenotazione_Volo (IDPrenotazione, IDVolo, PostoAssegnato) VALUES
 (1, 1, '12A'),
 (2, 2, '15C');
 
--- QUERY ESEMPLIFICATIVE
+-- SIMULAZIONI DI INPUT UTENTE
 
--- 1. Voli disponibili tra due città in data specifica
-SELECT V.IDVolo, V.DataOraPartenza, V.DataOraArrivo, A1.Città AS Partenza, A2.Città AS Arrivo
+-- 👤 Simulazione: Nuovo cliente che si registra
+INSERT INTO Cliente (Nome, Cognome, Email, Telefono, DataNascita)
+VALUES ('Giulia', 'Verdi', 'giulia.verdi@email.it', '3409876543', '1992-12-12');
+
+-- 🧾 Simulazione: Cliente Giulia effettua una prenotazione per il volo 1
+INSERT INTO Prenotazione (IDCliente, DataPrenotazione, MetodoPagamento, ImportoTotale)
+VALUES (3, '2025-06-22', 'Bonifico', 160.00);
+
+-- ✈️ Simulazione: Assegnazione posto a Giulia sul volo 1
+INSERT INTO Prenotazione_Volo (IDPrenotazione, IDVolo, PostoAssegnato)
+VALUES (3, 1, '14B');
+
+-- 🔍 Simulazione: Ricerca di tutti i voli con partenza da Roma il 15 luglio
+SELECT V.IDVolo, V.DataOraPartenza, V.DataOraArrivo
 FROM Volo V
-JOIN Aeroporto A1 ON V.IDAeroportoPartenza = A1.IDAeroporto
-JOIN Aeroporto A2 ON V.IDAeroportoArrivo = A2.IDAeroporto
-WHERE A1.Città = 'Roma' AND A2.Città = 'Milano'
-  AND DATE(V.DataOraPartenza) = '2025-07-15';
+JOIN Aeroporto A ON V.IDAeroportoPartenza = A.IDAeroporto
+WHERE A.Città = 'Roma' AND DATE(V.DataOraPartenza) = '2025-07-15';
 
--- 2. Storico prenotazioni cliente
-SELECT P.IDPrenotazione, P.DataPrenotazione, V.IDVolo, V.DataOraPartenza, V.DataOraArrivo
-FROM Prenotazione P
-JOIN Prenotazione_Volo PV ON P.IDPrenotazione = PV.IDPrenotazione
-JOIN Volo V ON PV.IDVolo = V.IDVolo
-WHERE P.IDCliente = 1;
-
--- 3. Verifica validità biglietto
-SELECT CASE
-           WHEN V.DataOraPartenza > NOW() THEN 'Valido'
-           ELSE 'Scaduto'
-       END AS StatoBiglietto
-FROM Prenotazione_Volo PV
-JOIN Volo V ON PV.IDVolo = V.IDVolo
-WHERE PV.IDPrenotazione = 1;
-
--- 4. Elenco passeggeri di un volo
+-- 🔍 Simulazione: Elenco passeggeri del volo 1
 SELECT C.Nome, C.Cognome
 FROM Cliente C
 JOIN Prenotazione P ON C.IDCliente = P.IDCliente
 JOIN Prenotazione_Volo PV ON P.IDPrenotazione = PV.IDPrenotazione
 WHERE PV.IDVolo = 1;
 
--- 5. Tratte più richieste in un intervallo
-SELECT A1.Città AS Partenza, A2.Città AS Arrivo, COUNT(*) AS NumeroPrenotazioni
-FROM Volo V
-JOIN Aeroporto A1 ON V.IDAeroportoPartenza = A1.IDAeroporto
-JOIN Aeroporto A2 ON V.IDAeroportoArrivo = A2.IDAeroporto
-JOIN Prenotazione_Volo PV ON V.IDVolo = PV.IDVolo
-JOIN Prenotazione P ON PV.IDPrenotazione = P.IDPrenotazione
-WHERE P.DataPrenotazione BETWEEN '2025-06-01' AND '2025-06-30'
-GROUP BY A1.Città, A2.Città
-ORDER BY NumeroPrenotazioni DESC;
+-- 🔍 Simulazione: Prenotazioni effettuate dopo il 21 giugno
+SELECT * FROM Prenotazione WHERE DataPrenotazione > '2025-06-21';
