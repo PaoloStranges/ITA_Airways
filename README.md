@@ -15,7 +15,6 @@ Progettare uno **schema di persistenza dei dati** a supporto del processo di **v
 
 - `ITA_Airways_DB_script.sql`: file SQL aggiornato con struttura relazionale, dati descrittivi e query di test.
 - `README.md`: guida completa per importazione, utilizzo e test del database.
-- (Facoltativo) `schema_originale.sql`: versione semplificata dello script per confronto.
 
 ## 🧰 Requisiti
 
