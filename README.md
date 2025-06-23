@@ -15,7 +15,7 @@ Progettare uno **schema di persistenza dei dati** a supporto del processo di **v
 
 - `ITA_Airways_DB_script.sql`: file SQL aggiornato con struttura relazionale, dati descrittivi e query di test.
 - `diagramma_ER_ITA_Airways.png`: immagine del diagramma ER.
-- `schema.dbml`: codice sorgente del diagramma in formato DBML.
+- `ITA_Airways_DB_script.sql`: codice sorgente del diagramma in formato SQL.
 - `README.md`: guida completa per importazione, utilizzo e test del database.
 
 ## 🧰 Requisiti
