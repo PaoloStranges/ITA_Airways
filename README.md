@@ -14,6 +14,8 @@ Progettare uno **schema di persistenza dei dati** a supporto del processo di **v
 ## 📂 Contenuto del repository
 
 - `ITA_Airways_DB_script.sql`: file SQL aggiornato con struttura relazionale, dati descrittivi e query di test.
+- `diagramma_ER_ITA_Airways.png`: immagine del diagramma ER.
+- `schema.dbml`: codice sorgente del diagramma in formato DBML.
 - `README.md`: guida completa per importazione, utilizzo e test del database.
 
 ## 🧰 Requisiti
@@ -26,7 +28,7 @@ Puoi usare qualsiasi ambiente SQL che supporti standard ANSI SQL:
 
 ## 🛠️ Istruzioni per l'uso
 
-1. Scarica il file **`schema_arricchito.sql`** da questo repository.
+1. Scarica il file **`ITA_Airways_DB_script.sql`** da questo repository.
 2. Aprilo con uno dei seguenti strumenti:
    - [DB Browser for SQLite](https://sqlitebrowser.org/)
    - [DBeaver.io](https://dbeaver.io/)
@@ -63,11 +65,24 @@ Per test immediato, puoi incollare lo script su:
 
 *(NB: il supporto per NOW() può variare su alcuni compilatori SQL online)*
 
+## 📊 Diagramma ER
+
+Il seguente **diagramma entità-relazioni (ER)** visualizza la struttura logica del database progettato, mostrando le entità principali (Clienti, Voli, Prenotazioni, ecc.) e le relazioni tra di esse.
+
+<p align="center">
+  <img src="diagramma_ER_ITA_Airways.png" alt="Diagramma ER" width="750"/>
+</p>
+
+### 🛠 Strumento utilizzato
+Il diagramma è stato creato con [**dbdiagram.io**](https://dbdiagram.io), uno strumento gratuito e online per la modellazione concettuale di database.
+
+### 🔁 Modifica o visualizza online
+
+Puoi modificare o ricostruire il diagramma importando il file `schema.dbml` (presente nel repository) direttamente su [https://dbdiagram.io](https://dbdiagram.io).
+
 ## 📘 Autore
 
 - **Nome**: *Paolo Stranges*
 - **Matricola**: *0312201143*
 - **Università**: *Università Telematica Pegaso*
 - **Corso di laurea**: *Informatica per le Aziende Digitali (L-31)*
-
----
