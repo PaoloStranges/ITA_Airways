@@ -70,7 +70,7 @@ Per test immediato, puoi incollare lo script su:
 Il seguente **diagramma entità-relazioni (ER)** visualizza la struttura logica del database progettato, mostrando le entità principali (Clienti, Voli, Prenotazioni, ecc.) e le relazioni tra di esse.
 
 <p align="center">
-  <img src="diagramma_ER_ITA_Airways.png" alt="Diagramma ER" width="750"/>
+  <img src="DIAGRAMMA__ER_ITA_Airways.png" alt="Diagramma ER" width="750"/>
 </p>
 
 ### 🛠 Strumento utilizzato
