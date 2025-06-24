@@ -1,105 +1,150 @@
+-- ============================
+--  CREAZIONE TABELLE
+-- ============================
 
--- CREAZIONE TABELLE
-
-CREATE TABLE Cliente (
-    IDCliente SERIAL PRIMARY KEY,
-    Nome VARCHAR(50),
-    Cognome VARCHAR(50),
-    Email VARCHAR(100),
-    Telefono VARCHAR(20),
-    DataNascita DATE
+CREATE TABLE Aereo (
+    id_aereo SERIAL PRIMARY KEY,
+    modello VARCHAR(50),
+    capacita INTEGER,
+    consumo_medio DECIMAL(8,2)
 );
 
-CREATE TABLE Aeroporto (
-    IDAeroporto SERIAL PRIMARY KEY,
-    Nome VARCHAR(100),
-    Città VARCHAR(50),
-    Nazione VARCHAR(50)
+CREATE TABLE Tratta (
+    id_tratta SERIAL PRIMARY KEY,
+    aeroporto_partenza VARCHAR(10),
+    aeroporto_arrivo VARCHAR(10),
+    distanza INTEGER,
+    durata_stimata INTEGER
 );
 
-CREATE TABLE Aeromobile (
-    IDAeromobile SERIAL PRIMARY KEY,
-    Modello VARCHAR(50),
-    Capacità INT,
-    AnnoImmatricolazione INT
+CREATE TABLE Viaggio (
+    id_viaggio SERIAL PRIMARY KEY,
+    id_aereo INTEGER REFERENCES Aereo(id_aereo),
+    id_tratta INTEGER REFERENCES Tratta(id_tratta),
+    data_partenza DATE,
+    ora_partenza TIME
 );
 
-CREATE TABLE Volo (
-    IDVolo SERIAL PRIMARY KEY,
-    DataOraPartenza TIMESTAMP,
-    DataOraArrivo TIMESTAMP,
-    IDAeroportoPartenza INT REFERENCES Aeroporto(IDAeroporto),
-    IDAeroportoArrivo INT REFERENCES Aeroporto(IDAeroporto),
-    IDAeromobile INT REFERENCES Aeromobile(IDAeromobile)
+CREATE TABLE PosizioneAereo (
+    id_posizione SERIAL PRIMARY KEY,
+    id_aereo INTEGER REFERENCES Aereo(id_aereo),
+    latitudine DECIMAL(9,6),
+    longitudine DECIMAL(9,6),
+    altitudine INTEGER,
+    timestamp TIMESTAMP
 );
 
-CREATE TABLE Prenotazione (
-    IDPrenotazione SERIAL PRIMARY KEY,
-    IDCliente INT REFERENCES Cliente(IDCliente),
-    DataPrenotazione DATE,
-    MetodoPagamento VARCHAR(50),
-    ImportoTotale DECIMAL(10,2)
+CREATE TABLE EventoOperativo (
+    id_evento SERIAL PRIMARY KEY,
+    id_aereo INTEGER REFERENCES Aereo(id_aereo),
+    id_viaggio INTEGER REFERENCES Viaggio(id_viaggio),
+    tipo_evento VARCHAR(50),
+    descrizione TEXT,
+    data_ora TIMESTAMP
 );
 
-CREATE TABLE Prenotazione_Volo (
-    IDPrenotazione INT REFERENCES Prenotazione(IDPrenotazione),
-    IDVolo INT REFERENCES Volo(IDVolo),
-    PostoAssegnato VARCHAR(10),
-    PRIMARY KEY (IDPrenotazione, IDVolo)
+CREATE TABLE ConsumoCarburante (
+    id_consumo SERIAL PRIMARY KEY,
+    id_viaggio INTEGER REFERENCES Viaggio(id_viaggio),
+    litri_consumati DECIMAL(8,2),
+    durata_effettiva INTEGER
 );
 
--- INSERIMENTO DATI INIZIALI
+-- ============================
+--  INSERIMENTO DATI ESEMPI
+-- ============================
 
-INSERT INTO Cliente (Nome, Cognome, Email, Telefono, DataNascita) VALUES
-('Mario', 'Rossi', 'mario.rossi@email.it', '3401234567', '1980-05-20'),
-('Luca', 'Bianchi', 'luca.bianchi@email.it', '3477654321', '1995-10-10');
+-- Aerei
+INSERT INTO Aereo (modello, capacita, consumo_medio) VALUES
+('Airbus A350', 300, 2.50),
+('Airbus A320neo', 180, 2.00);
 
-INSERT INTO Aeroporto (Nome, Città, Nazione) VALUES
-('Leonardo da Vinci', 'Roma', 'Italia'),
-('Linate', 'Milano', 'Italia');
+-- Tratte
+INSERT INTO Tratta (aeroporto_partenza, aeroporto_arrivo, distanza, durata_stimata) VALUES
+('FCO', 'JFK', 6800, 540),
+('MXP', 'LIN', 50, 20);
 
-INSERT INTO Aeromobile (Modello, Capacità, AnnoImmatricolazione) VALUES
-('Airbus A320neo', 180, 2022),
-('Airbus A350', 300, 2023);
+-- Viaggi pianificati e futuri
+INSERT INTO Viaggio (id_aereo, id_tratta, data_partenza, ora_partenza) VALUES
+(1, 1, '2025-06-23', '10:30'),
+(2, 2, '2025-06-24', '08:00'),
+(1, 1, '2025-07-01', '09:00'),
+(1, 1, '2025-07-05', '13:30'),
+(2, 2, '2025-06-30', '07:00');
 
-INSERT INTO Volo (DataOraPartenza, DataOraArrivo, IDAeroportoPartenza, IDAeroportoArrivo, IDAeromobile) VALUES
-('2025-07-15 08:00:00', '2025-07-15 09:10:00', 1, 2, 1),
-('2025-07-16 15:00:00', '2025-07-16 18:00:00', 2, 1, 2);
+-- Posizione aerei (storico + "realtime")
+INSERT INTO PosizioneAereo (id_aereo, latitudine, longitudine, altitudine, timestamp) VALUES
+(1, 41.800000, 12.250000, 10000, '2025-06-23 11:00:00'),
+(1, 43.000000, -5.000000, 11000, '2025-06-23 12:00:00'),
+(2, 45.630000, 8.720000, 3000, '2025-06-24 08:15:00'),
+(1, 44.100000, -10.100000, 11200, CURRENT_TIMESTAMP); -- simulazione GPS live
 
-INSERT INTO Prenotazione (IDCliente, DataPrenotazione, MetodoPagamento, ImportoTotale) VALUES
-(1, '2025-06-20', 'Carta di credito', 150.00),
-(2, '2025-06-21', 'PayPal', 180.00);
+-- Eventi operativi
+INSERT INTO EventoOperativo (id_aereo, id_viaggio, tipo_evento, descrizione, data_ora) VALUES
+(1, 1, 'Ritardo', 'Partenza posticipata di 30 minuti', '2025-06-23 10:00:00'),
+(1, 1, 'Turbolenza', 'Turboenza moderata in volo', '2025-06-23 12:30:00'),
+(1, NULL, 'Manutenzione Programmata', 'Check completo motore - Hangar 2', '2025-06-29 08:00:00');
 
-INSERT INTO Prenotazione_Volo (IDPrenotazione, IDVolo, PostoAssegnato) VALUES
-(1, 1, '12A'),
-(2, 2, '15C');
+-- Consumi reali
+INSERT INTO ConsumoCarburante (id_viaggio, litri_consumati, durata_effettiva) VALUES
+(1, 17000.50, 560),
+(2, 500.25, 25),
+(3, 17250.25, 545),
+(4, 16980.75, 530);
 
--- SIMULAZIONI DI INPUT UTENTE
+-- ============================
+--  VISTA: POSIZIONE ATTUALE AEREI
+-- ============================
 
--- Simulazione: Nuovo cliente che si registra
-INSERT INTO Cliente (Nome, Cognome, Email, Telefono, DataNascita)
-VALUES ('Giulia', 'Verdi', 'giulia.verdi@email.it', '3409876543', '1992-12-12');
+CREATE VIEW Vista_Posizione_Attuale AS
+SELECT DISTINCT ON (id_aereo)
+    id_aereo, latitudine, longitudine, altitudine, timestamp
+FROM PosizioneAereo
+ORDER BY id_aereo, timestamp DESC;
 
--- Simulazione: Cliente Giulia effettua una prenotazione per il volo 1
-INSERT INTO Prenotazione (IDCliente, DataPrenotazione, MetodoPagamento, ImportoTotale)
-VALUES (3, '2025-06-22', 'Bonifico', 160.00);
+-- ============================
+--  QUERY DI UTILITÀ OPERATIVA
+-- ============================
 
--- Simulazione: Assegnazione posto a Giulia sul volo 1
-INSERT INTO Prenotazione_Volo (IDPrenotazione, IDVolo, PostoAssegnato)
-VALUES (3, 1, '14B');
+-- 1. Ultima posizione per ogni aereo
+SELECT * FROM Vista_Posizione_Attuale;
 
--- Simulazione: Ricerca di tutti i voli con partenza da Roma il 15 luglio
-SELECT V.IDVolo, V.DataOraPartenza, V.DataOraArrivo
-FROM Volo V
-JOIN Aeroporto A ON V.IDAeroportoPartenza = A.IDAeroporto
-WHERE A.Città = 'Roma' AND DATE(V.DataOraPartenza) = '2025-07-15';
+-- 2. Storico eventi per aereo
+SELECT tipo_evento, descrizione, data_ora
+FROM EventoOperativo
+WHERE id_aereo = 1
+ORDER BY data_ora DESC;
 
--- Simulazione: Elenco passeggeri del volo 1
-SELECT C.Nome, C.Cognome
-FROM Cliente C
-JOIN Prenotazione P ON C.IDCliente = P.IDCliente
-JOIN Prenotazione_Volo PV ON P.IDPrenotazione = PV.IDPrenotazione
-WHERE PV.IDVolo = 1;
+-- 3. Consumo medio per modello
+SELECT a.modello, AVG(c.litri_consumati) AS consumo_medio
+FROM ConsumoCarburante c
+JOIN Viaggio v ON c.id_viaggio = v.id_viaggio
+JOIN Aereo a ON v.id_aereo = a.id_aereo
+GROUP BY a.modello;
 
--- Simulazione: Prenotazioni effettuate dopo il 21 giugno
-SELECT * FROM Prenotazione WHERE DataPrenotazione > '2025-06-21';
+-- 4. Viaggi tra FCO e JFK
+SELECT v.id_viaggio, v.data_partenza, v.ora_partenza, a.modello
+FROM Viaggio v
+JOIN Tratta t ON v.id_tratta = t.id_tratta
+JOIN Aereo a ON v.id_aereo = a.id_aereo
+WHERE t.aeroporto_partenza = 'FCO' AND t.aeroporto_arrivo = 'JFK';
+
+-- 5. Tratte con maggiore consumo totale
+SELECT t.id_tratta, t.aeroporto_partenza, t.aeroporto_arrivo, SUM(c.litri_consumati) AS totale_consumo
+FROM ConsumoCarburante c
+JOIN Viaggio v ON c.id_viaggio = v.id_viaggio
+JOIN Tratta t ON v.id_tratta = t.id_tratta
+GROUP BY t.id_tratta, t.aeroporto_partenza, t.aeroporto_arrivo
+ORDER BY totale_consumo DESC;
+
+-- 6. Efficienza media (litri/km) per tratta
+SELECT
+    t.aeroporto_partenza,
+    t.aeroporto_arrivo,
+    COUNT(*) AS numero_viaggi,
+    ROUND(AVG(c.litri_consumati / t.distanza), 2) AS litri_per_km_medi
+FROM ConsumoCarburante c
+JOIN Viaggio v ON c.id_viaggio = v.id_viaggio
+JOIN Tratta t ON v.id_tratta = t.id_tratta
+GROUP BY t.aeroporto_partenza, t.aeroporto_arrivo
+ORDER BY litri_per_km_medi;
