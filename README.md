@@ -9,78 +9,81 @@ Repository realizzato per il Project Work del Corso di Laurea in *Informatica pe
 ## 🎯 Obiettivi principali
 
 - Memorizzazione delle posizioni GPS (latitudine, longitudine, altitudine, timestamp)
-- Gestione di eventi operativi (guasti, ritardi, manutenzioni)
-- Monitoraggio dei consumi carburante per singolo viaggio
-- Supporto all’efficienza energetica e alla manutenzione predittiva
-- Creazione di viste e query per il supporto decisionale operativo
+- Gestione di eventi operativi (ritardi, turbolenze, manutenzioni)
+- Monitoraggio dei consumi di carburante per singolo viaggio
+- Supporto a sostenibilità e manutenzione predittiva
+- Creazione di query e viste per analisi operative e ambientali
 
 ---
 
 ## 📂 Contenuto del repository
 
-- `ITA_Airways_DB_script.sql` – Script completo (DDL, DML, viste e query)
-- `diagramma_ER_ITA_Airways.png` – Schema ER delle entità e relazioni
-- `README.md` – Istruzioni e documentazione
+- `ITA_Airways_DB_script.sql` – Script SQL completo: struttura tabelle (DDL), dati realistici (DML), viste e query.
+- `diagramma_ER_ITA_Airways.png` – Diagramma ER delle entità e relazioni.
+- `README.md` – Istruzioni all’uso e guida tecnica.
 
 ---
 
 ## 🧰 Requisiti
 
-Per testare il progetto è consigliato un ambiente PostgreSQL:
+Per eseguire il progetto è necessario un ambiente PostgreSQL compatibile:
 
 - PostgreSQL ≥ 15
-- Compatibile con: pgAdmin, DBeaver, Azure Data Studio
-- Per test rapidi: [https://dbfiddle.uk](https://dbfiddle.uk)
+- Tool consigliati: pgAdmin, DBeaver, Azure Data Studio, psql
+- Testabile anche su: [https://dbfiddle.uk](https://dbfiddle.uk), [https://extendsclass.com/postgresql-online.html](https://extendsclass.com/postgresql-online.html)
 
 ---
 
 ## 🛠️ Istruzioni per l'uso
 
-1. Apri il file `ITA_Airways_DB_script.sql` in un ambiente SQL compatibile.
+1. Apri il file `ITA_Airways_DB_script.sql` in un ambiente PostgreSQL.
 2. Esegui lo script per:
-   - Creare lo schema relazionale
-   - Popolare i dati con esempi realistici
-   - Eseguire query e viste dimostrative
+   - Creare tutte le tabelle relazionali
+   - Inserire dati di esempio realistici
+   - Eseguire viste e query dimostrative
+3. Verifica i risultati eseguendo le query una alla volta. Tutte le query sono state testate e producono output coerenti con lo scenario.
 
 ---
 
 ## ✈️ Funzionalità implementate
 
-- Tracciamento real-time della posizione degli aerei
-- Registro eventi operativi e storico manutenzioni
-- Calcolo efficienza per tratta e modello
-- Viste aggregate per stato della flotta
-- Analisi ambientale basata sul consumo carburante
+- Tracciamento in tempo reale delle posizioni aeree
+- Registro storico degli eventi operativi
+- Analisi dei consumi e dell’efficienza per tipo di aereo e tratta
+- Query aggregate su impatti ambientali e operativi
+- Vista SQL (`Vista_Posizione_Attuale`) per aggiornamento live della flotta
 
 ---
 
-## ✅ Query SQL esemplificative
+## ✅ Query SQL dimostrative
 
-- Ultima posizione GPS registrata per un aereo
-- Storico eventi tecnici di un velivolo
-- Consumo medio per tipo di aeromobile
-- Efficienza energetica per tratta
-- Tratte a maggior impatto ambientale
+Nel file `.sql` sono incluse le seguenti query, tutte testate e documentate:
 
-È inclusa anche una vista `Vista_Posizione_Attuale` per monitoraggio live semplificato.
+1. **Ultima posizione GPS per aereo**
+2. **Storico eventi tecnici per aereo**
+3. **Consumo medio per modello di aereo**
+4. **Viaggi programmati tra due aeroporti (es. FCO → JFK)**
+5. **Tratte con maggiore consumo totale in un intervallo di tempo**
+
+Tutti i risultati sono stati verificati su ambienti PostgreSQL online, e gli screenshot sono disponibili nell’elaborato PDF.
 
 ---
 
 ## 📊 Diagramma ER
 
-Il modello concettuale include le entità:
+Il modello concettuale include sei entità principali:
 
-- Aereo
-- Tratta
-- Viaggio
-- PosizioneAereo
-- EventoOperativo
-- ConsumoCarburante
+- `Aereo`
+- `Tratta`
+- `Viaggio`
+- `PosizioneAereo`
+- `EventoOperativo`
+- `ConsumoCarburante`
 
-Realizzato con: [dbdiagram.io](https://dbdiagram.io)
+Realizzato con [dbdiagram.io](https://dbdiagram.io).
 
 <p align="center">
-  <img src="DIAGRAMMA__ER_ITA_Airways.png" alt="Diagramma ER" width="700"/>
+  <img src="diagramma_ER_ITA_Airways.png" alt="Diagramma ER" width="700"/>
 </p>
 
 ---
@@ -88,11 +91,12 @@ Realizzato con: [dbdiagram.io](https://dbdiagram.io)
 ## 📖 Fonti e strumenti
 
 - [ITA Airways – Sito ufficiale](https://www.ita-airways.com)
-- [PostgreSQL Docs](https://www.postgresql.org/docs)
+- [PostgreSQL – Documentazione](https://www.postgresql.org/docs)
 - Elmasri & Navathe – *Fundamentals of Database Systems*
 - [IATA – Digital Transformation in Air Transport](https://www.iata.org)
-- [dbfiddle.uk](https://dbfiddle.uk)
 - [dbdiagram.io](https://dbdiagram.io)
+- [dbfiddle.uk](https://dbfiddle.uk)
+- [extendsclass.com](https://extendsclass.com/postgresql-online.html)
 
 ---
 
