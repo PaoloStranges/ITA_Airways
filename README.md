@@ -72,7 +72,7 @@ Il seguente diagramma entità-relazioni (ER) mostra le tabelle e le relazioni tr
 - Consumi carburante
 
 <p align="center">
-  <img src="diagramma_ER_ITA_Airways.png" alt="Diagramma ER" width="750"/>
+  <img src="DIAGRAMMA__ER_ITA_Airways.png" alt="Diagramma ER" width="750"/>
 </p>
 
 ### 🛠 Strumento utilizzato
