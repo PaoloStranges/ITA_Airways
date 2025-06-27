@@ -1,87 +1,104 @@
 # ITA Airways – Project Work Database
 
-Questo repository contiene il dump SQL del database progettato per il **Project Work** del Corso di Laurea in *Informatica per le Aziende Digitali (L-31)*, con focus sulla **modellazione dei dati per il monitoraggio operativo della flotta ITA Airways**.
+Repository realizzato per il Project Work del Corso di Laurea in *Informatica per le Aziende Digitali (L-31)* – Università Telematica Pegaso.
 
-## 🎯 Obiettivo del progetto
+📌 Obiettivo: progettare un database relazionale a supporto della **gestione operativa della flotta aerea** di ITA Airways, con particolare attenzione al tracciamento in tempo reale, alla registrazione degli eventi tecnici e all’analisi dei consumi.
 
-Progettare un **sistema informativo per il monitoraggio in tempo reale degli aeromobili**, con particolare attenzione a:
-- Tracciamento della posizione (coordinate GPS, altitudine, timestamp)
-- Registrazione e gestione degli eventi operativi (ritardi, manutenzioni, emergenze)
-- Monitoraggio dei consumi di carburante per singolo volo
-- Supporto alla manutenzione predittiva e alla sostenibilità ambientale
-- Produzione di viste e query utili alla **Direzione Operativa** per l’analisi decisionale
+---
+
+## 🎯 Obiettivi principali
+
+- Memorizzazione delle posizioni GPS (latitudine, longitudine, altitudine, timestamp)
+- Gestione di eventi operativi (guasti, ritardi, manutenzioni)
+- Monitoraggio dei consumi carburante per singolo viaggio
+- Supporto all’efficienza energetica e alla manutenzione predittiva
+- Creazione di viste e query per il supporto decisionale operativo
+
+---
 
 ## 📂 Contenuto del repository
 
-- `ITA_Airways_DB_script.sql`: file SQL con struttura relazionale, dati realistici, viste e query.
-- `diagramma_ER_ITA_Airways.png`: immagine del diagramma ER.
-- `README.md`: guida all’importazione, uso e test del database.
+- `ITA_Airways_DB_script.sql` – Script completo (DDL, DML, viste e query)
+- `diagramma_ER_ITA_Airways.png` – Schema ER delle entità e relazioni
+- `README.md` – Istruzioni e documentazione
+
+---
 
 ## 🧰 Requisiti
 
-È consigliato l’uso di un ambiente compatibile con **PostgreSQL**:
+Per testare il progetto è consigliato un ambiente PostgreSQL:
 
-- PostgreSQL 15 o superiore (raccomandato)
-- dbfiddle.uk (per test online)
-- DBeaver, pgAdmin, Azure Data Studio o simili
+- PostgreSQL ≥ 15
+- Compatibile con: pgAdmin, DBeaver, Azure Data Studio
+- Per test rapidi: [https://dbfiddle.uk](https://dbfiddle.uk)
+
+---
 
 ## 🛠️ Istruzioni per l'uso
 
-1. Scarica il file **`ITA_Airways_DB_script.sql`** da questo repository.
-2. Aprilo con un ambiente SQL compatibile (es. dbfiddle.uk o PostgreSQL locale).
-3. Esegui lo script per:
-   - Creare le tabelle e i vincoli relazionali
-   - Popolare il database con **dati aziendali simulati**
-   - Creare viste e lanciare query operative
+1. Apri il file `ITA_Airways_DB_script.sql` in un ambiente SQL compatibile.
+2. Esegui lo script per:
+   - Creare lo schema relazionale
+   - Popolare i dati con esempi realistici
+   - Eseguire query e viste dimostrative
 
-## ✈️ Funzionalità del database
+---
 
-Il sistema progettato consente di:
-- Tracciare in tempo reale la posizione degli aerei in volo
-- Registrare eventi tecnici e operativi con storico dettagliato
-- Calcolare i consumi effettivi e l’efficienza energetica per tratta
-- Generare viste aggregate (es. posizione attuale di tutta la flotta)
-- Estrarre KPI utili alla pianificazione e al controllo
+## ✈️ Funzionalità implementate
 
-## ✅ Query SQL incluse
+- Tracciamento real-time della posizione degli aerei
+- Registro eventi operativi e storico manutenzioni
+- Calcolo efficienza per tratta e modello
+- Viste aggregate per stato della flotta
+- Analisi ambientale basata sul consumo carburante
 
-Tra le principali query operative presenti nello script:
-- ✅ Ultima posizione GPS per ciascun aereo
-- ✅ Storico eventi tecnici di un aeromobile
-- ✅ Consumo medio per modello di aereo
-- ✅ Efficienza in litri/km per tratta
-- ✅ Tratte più dispendiose in termini di carburante
+---
 
-Inoltre, è presente una **vista SQL (`Vista_Posizione_Attuale`)** per un aggiornamento immediato della flotta.
+## ✅ Query SQL esemplificative
 
-## 🔗 Utilizzo online
+- Ultima posizione GPS registrata per un aereo
+- Storico eventi tecnici di un velivolo
+- Consumo medio per tipo di aeromobile
+- Efficienza energetica per tratta
+- Tratte a maggior impatto ambientale
 
-Puoi testare lo script direttamente su:
-- [https://dbfiddle.uk](https://dbfiddle.uk) → Seleziona "PostgreSQL 15" o superiore
+È inclusa anche una vista `Vista_Posizione_Attuale` per monitoraggio live semplificato.
 
-*(Nota: alcune funzioni come `CURRENT_TIMESTAMP` richiedono un motore SQL con gestione reale del tempo)*
+---
 
 ## 📊 Diagramma ER
 
-Il seguente diagramma entità-relazioni (ER) mostra le tabelle e le relazioni tra:
-- Aerei
-- Tratte
-- Viaggi
-- Eventi operativi
-- Posizioni GPS
-- Consumi carburante
+Il modello concettuale include le entità:
+
+- Aereo
+- Tratta
+- Viaggio
+- PosizioneAereo
+- EventoOperativo
+- ConsumoCarburante
+
+Realizzato con: [dbdiagram.io](https://dbdiagram.io)
 
 <p align="center">
-  <img src="DIAGRAMMA__ER_ITA_Airways.png" alt="Diagramma ER" width="750"/>
+  <img src="diagramma_ER_ITA_Airways.png" alt="Diagramma ER" width="700"/>
 </p>
 
-### 🛠 Strumento utilizzato
+---
 
-Il diagramma è stato creato con [**dbdiagram.io**](https://dbdiagram.io), uno strumento gratuito per la modellazione concettuale.
+## 📖 Fonti e strumenti
 
-## 📘 Autore
+- [ITA Airways – Sito ufficiale](https://www.ita-airways.com)
+- [PostgreSQL Docs](https://www.postgresql.org/docs)
+- Elmasri & Navathe – *Fundamentals of Database Systems*
+- [IATA – Digital Transformation in Air Transport](https://www.iata.org)
+- [dbfiddle.uk](https://dbfiddle.uk)
+- [dbdiagram.io](https://dbdiagram.io)
 
-- **Nome**: *Paolo Stranges*
-- **Matricola**: *0312201143*
-- **Università**: *Università Telematica Pegaso*
-- **Corso di laurea**: *Informatica per le Aziende Digitali (L-31)*
+---
+
+## 👨‍💻 Autore
+
+- **Nome**: Paolo Stranges  
+- **Matricola**: 0312201143  
+- **Università**: Università Telematica Pegaso  
+- **Corso di laurea**: Informatica per le Aziende Digitali (L-31)
