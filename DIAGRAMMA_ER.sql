@@ -1,8 +1,7 @@
-
 Table "Aereo" {
   "id_aereo" INT [pk]
   "modello" VARCHAR(50)
-  "capacità" INT
+  "capacita" INT
   "consumo_medio" DECIMAL(5,2)
 }
 
@@ -34,6 +33,7 @@ Table "PosizioneAereo" {
 Table "EventoOperativo" {
   "id_evento" INT [pk]
   "id_aereo" INT
+  "id_viaggio" INT
   "tipo_evento" VARCHAR(50)
   "descrizione" TEXT
   "data_ora" TIMESTAMP
@@ -46,12 +46,9 @@ Table "ConsumoCarburante" {
   "durata_effettiva" INT
 }
 
-Ref:"Aereo"."id_aereo" < "Viaggio"."id_aereo"
-
-Ref:"Tratta"."id_tratta" < "Viaggio"."id_tratta"
-
-Ref:"Aereo"."id_aereo" < "PosizioneAereo"."id_aereo"
-
-Ref:"Aereo"."id_aereo" < "EventoOperativo"."id_aereo"
-
-Ref:"Viaggio"."id_viaggio" < "ConsumoCarburante"."id_viaggio"
+Ref: "Aereo"."id_aereo" < "Viaggio"."id_aereo"
+Ref: "Tratta"."id_tratta" < "Viaggio"."id_tratta"
+Ref: "Aereo"."id_aereo" < "PosizioneAereo"."id_aereo"
+Ref: "Aereo"."id_aereo" < "EventoOperativo"."id_aereo"
+Ref: "Viaggio"."id_viaggio" < "EventoOperativo"."id_viaggio"
+Ref: "Viaggio"."id_viaggio" < "ConsumoCarburante"."id_viaggio"
