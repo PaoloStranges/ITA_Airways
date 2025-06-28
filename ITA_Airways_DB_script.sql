@@ -81,6 +81,7 @@ INSERT INTO ConsumoCarburante (id_viaggio, litri_consumati, durata_effettiva) VA
 (4, 16980.75, 530);
 
 
+
 ### All'interno di `ITA_Airways_DB_script.sql`, puoi aggiungere le query alla fine del file:
 
 ```sql
