@@ -84,9 +84,6 @@ INSERT INTO ConsumoCarburante (id_viaggio, litri_consumati, durata_effettiva) VA
 
 ### Di seguito sono riportate le 5 query dimostrative presenti nel project work
 
-```sql
--- Query dimostrative
-
 -- 1. Ultima posizione GPS per aereo
 SELECT * FROM PosizioneAereo
 WHERE id_aereo = 1
