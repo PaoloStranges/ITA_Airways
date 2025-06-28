@@ -81,7 +81,7 @@ INSERT INTO ConsumoCarburante (id_viaggio, litri_consumati, durata_effettiva) VA
 (4, 16980.75, 530);
 
 
-```Di seguito sono riportate le 5 query dimostrative presenti nel project work
+/*```Di seguito sono riportate le 5 query dimostrative presenti nel project work
 -- Query dimostrative
 
 -- 1. Ultima posizione GPS per aereo
@@ -115,4 +115,4 @@ JOIN Viaggio ON Tratta.id_tratta = Viaggio.id_tratta
 JOIN ConsumoCarburante ON Viaggio.id_viaggio = ConsumoCarburante.id_viaggio
 WHERE Viaggio.data_partenza BETWEEN '2025-06-01' AND '2025-06-30'
 GROUP BY Tratta.aeroporto_partenza, Tratta.aeroporto_arrivo
-ORDER BY consumo_totale DESC;
+ORDER BY consumo_totale DESC;*/
