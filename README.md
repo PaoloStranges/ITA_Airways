@@ -2,7 +2,7 @@
 
 Repository realizzato per il Project Work del Corso di Laurea in *Informatica per le Aziende Digitali (L-31)* – Università Telematica Pegaso.
 
-📌 Obiettivo: progettare un database relazionale a supporto della **gestione operativa della flotta aerea** di ITA Airways, con particolare attenzione al tracciamento in tempo reale, alla registrazione degli eventi tecnici e all’analisi dei consumi.
+📌 **Obiettivo**: progettare un database relazionale a supporto della **gestione operativa della flotta aerea** di ITA Airways, con particolare attenzione al tracciamento in tempo reale, alla registrazione degli eventi tecnici e all’analisi dei consumi.
 
 ---
 
@@ -60,10 +60,19 @@ Per eseguire il progetto è necessario un ambiente PostgreSQL compatibile:
 Nel file `.sql` sono incluse le seguenti query, tutte testate e documentate:
 
 1. **Ultima posizione GPS per aereo**
+   - Restituisce la posizione più recente di ogni aereo nel database.
+   
 2. **Storico eventi tecnici per aereo**
+   - Visualizza tutti gli eventi tecnici registrati per ciascun aereo (ritardi, turbolenze, manutenzioni).
+   
 3. **Consumo medio per modello di aereo**
+   - Calcola il consumo medio di carburante per ogni modello di aereo in base ai viaggi effettuati.
+   
 4. **Viaggi programmati tra due aeroporti (es. FCO → JFK)**
+   - Restituisce tutti i viaggi pianificati tra due aeroporti specificati.
+   
 5. **Tratte con maggiore consumo totale in un intervallo di tempo**
+   - Mostra le tratte con il consumo di carburante più elevato in un dato intervallo di tempo.
 
 Tutti i risultati sono stati verificati su ambienti PostgreSQL online, e gli screenshot sono disponibili nell’elaborato PDF.
 
@@ -83,7 +92,7 @@ Il modello concettuale include sei entità principali:
 Realizzato con [dbdiagram.io](https://dbdiagram.io).
 
 <p align="center">
-  <img src="DIAGRAMMA__ER_ITA_Airways.png" alt="Diagramma ER" width="700"/>
+  <img src="diagramma_ER_ITA_Airways.png" alt="Diagramma ER" width="700"/>
 </p>
 
 ---
