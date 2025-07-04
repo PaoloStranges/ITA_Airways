@@ -18,10 +18,11 @@ Repository realizzato per il Project Work del Corso di Laurea in *Informatica pe
 
 ## 📂 Contenuto del repository
 
-- `ITA_Airways_DB_script.sql` – Script SQL completo: struttura tabelle (DDL), dati realistici (DML), viste e query.
-- `diagramma_ER_ITA_Airways.png` – Diagramma ER delle entità e relazioni.
-- `README.md` – Istruzioni all’uso e guida tecnica.
 - `DIAGRAMMA_ER.sql` – File SQL eseguibile su dbdiagram.io: consente di visualizzare e modificare il diagramma ER in modo interattivo.
+- `diagramma_ER_ITA_Airways.png` – Diagramma ER delle entità e relazioni.
+- `ITA_Airways_DB_script.sql` – Script SQL completo: struttura tabelle (DDL), dati realistici (DML), viste e query.
+- `README.md` – Istruzioni all’uso e guida tecnica.
+
 ---
 
 ## 🧰 Requisiti
