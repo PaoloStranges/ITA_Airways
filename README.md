@@ -48,17 +48,17 @@ Per eseguire il progetto è necessario un ambiente PostgreSQL compatibile:
 
 ## ✈️ Funzionalità implementate
 
-- Tracciamento in tempo reale delle posizioni aeree
-- Registro storico degli eventi operativi
-- Analisi dei consumi e dell’efficienza per tipo di aereo e tratta
-- Query aggregate su impatti ambientali e operativi
-- Vista SQL (`Vista_Posizione_Attuale`) per aggiornamento live della flotta
+- Tracciamento in tempo reale delle posizioni aeree  
+- Registro storico degli eventi operativi  
+- Analisi dei consumi e dell’efficienza per tipo di aereo e tratta  
+- Query aggregate su impatti ambientali e operativi  
+- Stima delle emissioni di CO₂ per tratta in base al carburante consumato
 
 ---
 
 ## ✅ Query SQL dimostrative
 
-Nel file `.sql` sono incluse le seguenti query, tutte testate e documentate:
+Nel file `.sql` sono incluse le seguenti **6 query**, tutte testate e documentate:
 
 1. **Ultima posizione GPS per aereo**
    - Restituisce la posizione più recente di ogni aereo nel database.
@@ -74,6 +74,9 @@ Nel file `.sql` sono incluse le seguenti query, tutte testate e documentate:
    
 5. **Tratte con maggiore consumo totale in un intervallo di tempo**
    - Mostra le tratte con il consumo di carburante più elevato in un dato intervallo di tempo.
+
+6. **Stima delle emissioni di CO₂ per tratta**
+   - Calcola la quantità totale di CO₂ generata per ciascuna tratta, moltiplicando i litri consumati per 3.16 (kg CO₂/litro), utile per l’analisi ambientale.
 
 Tutti i risultati sono stati verificati su ambienti PostgreSQL online, e gli screenshot sono disponibili nell’elaborato PDF.
 
