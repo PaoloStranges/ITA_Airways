@@ -116,3 +116,15 @@ JOIN ConsumoCarburante ON Viaggio.id_viaggio = ConsumoCarburante.id_viaggio
 WHERE Viaggio.data_partenza BETWEEN '2025-06-01' AND '2025-06-30'
 GROUP BY Tratta.aeroporto_partenza, Tratta.aeroporto_arrivo
 ORDER BY consumo_totale DESC;*/
+
+-- 6. Stima delle emissioni di CO₂ per tratta
+-- Ogni litro di carburante bruciato produce circa 3.16 kg di CO₂
+SELECT 
+    Tratta.aeroporto_partenza,
+    Tratta.aeroporto_arrivo,
+    SUM(ConsumoCarburante.litri_consumati * 3.16) AS emissioni_CO2_kg
+FROM Tratta
+JOIN Viaggio ON Tratta.id_tratta = Viaggio.id_tratta
+JOIN ConsumoCarburante ON Viaggio.id_viaggio = ConsumoCarburante.id_viaggio
+GROUP BY Tratta.aeroporto_partenza, Tratta.aeroporto_arrivo
+ORDER BY emissioni_CO2_kg DESC;
