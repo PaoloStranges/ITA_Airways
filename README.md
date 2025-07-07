@@ -2,26 +2,26 @@
 
 Repository realizzato per il Project Work del Corso di Laurea in *Informatica per le Aziende Digitali (L-31)* – Università Telematica Pegaso.
 
-📌 **Obiettivo**: progettare un database relazionale a supporto della **gestione operativa della flotta aerea** di ITA Airways, con particolare attenzione al tracciamento in tempo reale, alla registrazione degli eventi tecnici e all’analisi dei consumi.
+📌 **Obiettivo**: progettare un database relazionale a supporto della **gestione della vendita dei biglietti** per ITA Airways, includendo prenotazioni, emissione dei titoli di viaggio e gestione dei voli con scalo.
 
 ---
 
 ## 🎯 Obiettivi principali
 
-- Memorizzazione delle posizioni GPS (latitudine, longitudine, altitudine, timestamp)
-- Gestione di eventi operativi (ritardi, turbolenze, manutenzioni)
-- Monitoraggio dei consumi di carburante per singolo viaggio
-- Supporto a sostenibilità e manutenzione predittiva
-- Creazione di query e viste per analisi operative e ambientali
+- Modellazione di biglietti aerei, tratte, viaggi e scali  
+- Gestione di prenotazioni e stato dei biglietti  
+- Rappresentazione di voli con scalo tramite tabella intermedia  
+- Implementazione di query SQL per scenari operativi concreti  
+- Calcolo delle emissioni stimate di CO₂ su base tratta  
 
 ---
 
 ## 📂 Contenuto del repository
 
-- `DIAGRAMMA_ER.sql` – File SQL eseguibile su dbdiagram.io: consente di visualizzare e modificare il diagramma ER in modo interattivo.
-- `diagramma_ER_ITA_Airways.png` – Diagramma ER delle entità e relazioni.
-- `ITA_Airways_DB_script.sql` – Script SQL completo: struttura tabelle (DDL), dati realistici (DML), viste e query.
-- `README.md` – Istruzioni all’uso e guida tecnica.
+- `DIAGRAMMA_ER.sql` – File SQL compatibile con dbdiagram.io: consente la visualizzazione del modello ER  
+- `diagramma_ER_ITA_Airways.png` – Immagine del diagramma ER (modello concettuale)  
+- `ITA_Airways_DB_script.sql` – Script SQL completo: creazione tabelle, vincoli, dati realistici, query  
+- `README.md` – Istruzioni per l’uso del progetto  
 
 ---
 
@@ -29,30 +29,32 @@ Repository realizzato per il Project Work del Corso di Laurea in *Informatica pe
 
 Per eseguire il progetto è necessario un ambiente PostgreSQL compatibile:
 
-- PostgreSQL ≥ 15
-- Tool consigliati: pgAdmin, DBeaver, Azure Data Studio, psql
-- Testabile anche su: [https://dbfiddle.uk](https://dbfiddle.uk), [https://extendsclass.com/postgresql-online.html](https://extendsclass.com/postgresql-online.html)
+- PostgreSQL ≥ 15  
+- Tool consigliati: pgAdmin, DBeaver, Azure Data Studio, psql  
+- Testabile anche su:  
+  - https://dbfiddle.uk  
+  - https://extendsclass.com/postgresql-online.html
 
 ---
 
 ## 🛠️ Istruzioni per l'uso
 
-1. Apri il file `ITA_Airways_DB_script.sql` in un ambiente PostgreSQL.
-2. Esegui lo script per:
-   - Creare tutte le tabelle relazionali
-   - Inserire dati di esempio realistici
-   - Eseguire viste e query dimostrative
-3. Verifica i risultati eseguendo le query una alla volta. Tutte le query sono state testate e producono output coerenti con lo scenario.
+1. Apri il file `ITA_Airways_DB_script.sql` in un ambiente PostgreSQL  
+2. Esegui lo script per:  
+   - Creare le tabelle relazionali  
+   - Inserire i dati di esempio  
+   - Lanciare le query dimostrative  
+3. Analizza i risultati ed esplora le funzionalità simulate  
 
 ---
 
 ## ✈️ Funzionalità implementate
 
-- Tracciamento in tempo reale delle posizioni aeree  
-- Registro storico degli eventi operativi  
-- Analisi dei consumi e dell’efficienza per tipo di aereo e tratta  
-- Query aggregate su impatti ambientali e operativi  
-- Stima delle emissioni di CO₂ per tratta in base al carburante consumato
+- Gestione delle prenotazioni e biglietti  
+- Associazione tra viaggi, tratte e scali intermedi  
+- Query aggregate su voli e prenotazioni  
+- Stima emissioni CO₂ per tratta  
+- Interrogazioni SQL ottimizzate per l’analisi operativa  
 
 ---
 
@@ -60,55 +62,54 @@ Per eseguire il progetto è necessario un ambiente PostgreSQL compatibile:
 
 Nel file `.sql` sono incluse le seguenti **6 query**, tutte testate e documentate:
 
-1. **Ultima posizione GPS per aereo**
-   - Restituisce la posizione più recente di ogni aereo nel database.
-   
-2. **Storico eventi tecnici per aereo**
-   - Visualizza tutti gli eventi tecnici registrati per ciascun aereo (ritardi, turbolenze, manutenzioni).
-   
-3. **Consumo medio per modello di aereo**
-   - Calcola il consumo medio di carburante per ogni modello di aereo in base ai viaggi effettuati.
-   
-4. **Viaggi programmati tra due aeroporti (es. FCO → JFK)**
-   - Restituisce tutti i viaggi pianificati tra due aeroporti specificati.
-   
-5. **Tratte con maggiore consumo totale in un intervallo di tempo**
-   - Mostra le tratte con il consumo di carburante più elevato in un dato intervallo di tempo.
+1. **Ultima posizione GPS per un aereo**  
+   Recupera l’ultima posizione registrata di un aereo.
 
-6. **Stima delle emissioni di CO₂ per tratta**
-   - Calcola la quantità totale di CO₂ generata per ciascuna tratta, moltiplicando i litri consumati per 3.16 (kg CO₂/litro), utile per l’analisi ambientale.
+2. **Storico eventi operativi di un aereo**  
+   Elenca tutti gli eventi tecnici associati a un aereo (ritardi, guasti, manutenzioni).
 
-Tutti i risultati sono stati verificati su ambienti PostgreSQL online, e gli screenshot sono disponibili nell’elaborato PDF.
+3. **Consumo medio di carburante per modello di aereo**  
+   Calcola il consumo medio in litri per ogni modello di aeromobile.
+
+4. **Viaggi programmati su una determinata tratta (es. FCO → JFK)**  
+   Mostra tutti i voli schedulati tra due aeroporti specifici.
+
+5. **Tratte con maggiore consumo totale in un intervallo temporale**  
+   Restituisce le tratte con il maggiore impatto in termini di carburante utilizzato.
+
+6. **Stima delle emissioni di CO₂ per tratta**  
+   Moltiplica i litri consumati per 3.16 (kg CO₂/litro), secondo le linee guida IPCC.
 
 ---
 
 ## 📊 Diagramma ER
 
-Il modello concettuale include sei entità principali:
+Il modello concettuale include sette entità principali:
 
-- `Aereo`
-- `Tratta`
-- `Viaggio`
-- `PosizioneAereo`
-- `EventoOperativo`
-- `ConsumoCarburante`
+- `Passeggero`  
+- `Biglietto`  
+- `Prenotazione`  
+- `Viaggio`  
+- `Tratta`  
+- `Scalo`  
+- `Aereo`  
 
 Realizzato con [dbdiagram.io](https://dbdiagram.io).
 
 <p align="center">
-  <img src="DIAGRAMMA__ER_ITA_Airways.png" alt="Diagramma ER" width="700"/>
+  <img src="diagramma_ER_ITA_Airways.png" alt="Diagramma ER" width="700"/>
 </p>
 
 ---
 
 ## 📖 Fonti e strumenti
 
-- [ITA Airways – Sito ufficiale](https://www.ita-airways.com)
-- [PostgreSQL – Documentazione](https://www.postgresql.org/docs)
-- Elmasri & Navathe – *Fundamentals of Database Systems*
-- [IATA – Digital Transformation in Air Transport](https://www.iata.org)
-- [dbdiagram.io](https://dbdiagram.io)
-- [dbfiddle.uk](https://dbfiddle.uk)
+- [ITA Airways – Sito ufficiale](https://www.ita-airways.com)  
+- [PostgreSQL – Documentazione](https://www.postgresql.org/docs)  
+- Elmasri & Navathe – *Fundamentals of Database Systems*  
+- [IATA – Digital Transformation in Air Transport](https://www.iata.org)  
+- [dbdiagram.io](https://dbdiagram.io)  
+- [dbfiddle.uk](https://dbfiddle.uk)  
 - [extendsclass.com](https://extendsclass.com/postgresql-online.html)
 
 ---
@@ -119,3 +120,4 @@ Realizzato con [dbdiagram.io](https://dbdiagram.io).
 - **Matricola**: 0312201143  
 - **Università**: Università Telematica Pegaso  
 - **Corso di laurea**: Informatica per le Aziende Digitali (L-31)
+
