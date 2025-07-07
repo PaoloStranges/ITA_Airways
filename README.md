@@ -1,37 +1,35 @@
+
 # ITA Airways – Project Work Database
 
 Repository realizzato per il Project Work del Corso di Laurea in *Informatica per le Aziende Digitali (L-31)* – Università Telematica Pegaso.
 
-📌 **Obiettivo**: progettare un database relazionale a supporto della **gestione della vendita dei biglietti** per ITA Airways, includendo prenotazioni, emissione dei titoli di viaggio e gestione dei voli con scalo.
+📌 **Obiettivo**: progettare un database relazionale a supporto della **gestione della vendita dei biglietti** per ITA Airways, includendo prenotazioni, emissione dei titoli di viaggio, gestione dei voli con scalo e verifica della validità dei biglietti.
 
 ---
 
 ## 🎯 Obiettivi principali
 
-- Modellazione di biglietti aerei, tratte, viaggi e scali  
-- Gestione di prenotazioni e stato dei biglietti  
-- Rappresentazione di voli con scalo tramite tabella intermedia  
-- Implementazione di query SQL per scenari operativi concreti  
-- Calcolo delle emissioni stimate di CO₂ su base tratta  
+- Modellazione delle entità principali (Passeggero, Biglietto, Prenotazione, Viaggio, Tratta, Scalo, Aereo)  
+- Gestione completa di prenotazioni e biglietti  
+- Rappresentazione dei voli con scalo tramite tabella intermedia  
+- Interrogazioni SQL utili per gestione operativa e analisi  
 
 ---
 
 ## 📂 Contenuto del repository
 
-- `DIAGRAMMA_ER.sql` – File SQL compatibile con dbdiagram.io: consente la visualizzazione del modello ER  
-- `diagramma_ER_ITA_Airways.png` – Immagine del diagramma ER (modello concettuale)  
-- `ITA_Airways_DB_script.sql` – Script SQL completo: creazione tabelle, vincoli, dati realistici, query  
-- `README.md` – Istruzioni per l’uso del progetto  
+- `DIAGRAMMA_ER.sql` – File SQL per dbdiagram.io  
+- `diagramma_ER_ITA_Airways.png` – Immagine del diagramma ER  
+- `ITA_Airways_DB_script.sql` – Script SQL completo con struttura, dati e query  
+- `README.md` – Guida tecnica al progetto
 
 ---
 
 ## 🧰 Requisiti
 
-Per eseguire il progetto è necessario un ambiente PostgreSQL compatibile:
-
 - PostgreSQL ≥ 15  
-- Tool consigliati: pgAdmin, DBeaver, Azure Data Studio, psql  
-- Testabile anche su:  
+- Tool consigliati: pgAdmin, DBeaver, Azure Data Studio  
+- Ambienti alternativi online:  
   - https://dbfiddle.uk  
   - https://extendsclass.com/postgresql-online.html
 
@@ -39,52 +37,47 @@ Per eseguire il progetto è necessario un ambiente PostgreSQL compatibile:
 
 ## 🛠️ Istruzioni per l'uso
 
-1. Apri il file `ITA_Airways_DB_script.sql` in un ambiente PostgreSQL  
-2. Esegui lo script per:  
-   - Creare le tabelle relazionali  
-   - Inserire i dati di esempio  
-   - Lanciare le query dimostrative  
-3. Analizza i risultati ed esplora le funzionalità simulate  
+1. Importa lo script `ITA_Airways_DB_script.sql` in PostgreSQL  
+2. Esegui lo script per creare schema, vincoli e dati  
+3. Lancia le query SQL dimostrative per testare il sistema
 
 ---
 
 ## ✈️ Funzionalità implementate
 
-- Gestione delle prenotazioni e biglietti  
-- Associazione tra viaggi, tratte e scali intermedi  
-- Query aggregate su voli e prenotazioni  
-- Stima emissioni CO₂ per tratta  
-- Interrogazioni SQL ottimizzate per l’analisi operativa  
+- Gestione completa di **prenotazioni e biglietti**, con tracciamento dello stato (emesso, confermato, annullato, utilizzato)  
+- Rappresentazione di **voli con scalo**, grazie a una tabella intermedia che mantiene l’ordine degli scali  
+- **Verifica della validità di un biglietto** in base a viaggio, data e stato  
+- Ricerca delle **prenotazioni attive** per data o tratta  
+- Analisi delle **tratte più richieste** sulla base del numero di biglietti emessi  
 
 ---
 
 ## ✅ Query SQL dimostrative
 
-Nel file `.sql` sono incluse le seguenti **6 query**, tutte testate e documentate:
+1. **Biglietti disponibili su una tratta e data**  
+   Recupera i biglietti ancora validi e prenotabili su una determinata tratta in una data specifica.
 
-1. **Ultima posizione GPS per un aereo**  
-   Recupera l’ultima posizione registrata di un aereo.
+2. **Storico delle prenotazioni di un passeggero**  
+   Elenca tutte le prenotazioni effettuate da un determinato passeggero, con stato e cronologia.
 
-2. **Storico eventi operativi di un aereo**  
-   Elenca tutti gli eventi tecnici associati a un aereo (ritardi, guasti, manutenzioni).
+3. **Verifica validità di un biglietto**  
+   Controlla se un biglietto è ancora valido, già utilizzato o annullato.
 
-3. **Consumo medio di carburante per modello di aereo**  
-   Calcola il consumo medio in litri per ogni modello di aeromobile.
+4. **Voli con scalo tra due aeroporti**  
+   Restituisce i viaggi che collegano due aeroporti anche attraverso uno o più scali, in ordine sequenziale.
 
-4. **Viaggi programmati su una determinata tratta (es. FCO → JFK)**  
-   Mostra tutti i voli schedulati tra due aeroporti specifici.
+5. **Numero di biglietti emessi per una tratta**  
+   Calcola il totale dei biglietti venduti su una specifica tratta, utile per analisi della domanda.
 
-5. **Tratte con maggiore consumo totale in un intervallo temporale**  
-   Restituisce le tratte con il maggiore impatto in termini di carburante utilizzato.
-
-6. **Stima delle emissioni di CO₂ per tratta**  
-   Moltiplica i litri consumati per 3.16 (kg CO₂/litro), secondo le linee guida IPCC.
+6. **Prenotazioni attive in una certa data**  
+   Mostra tutte le prenotazioni confermate per voli in partenza in una data specifica.
 
 ---
 
 ## 📊 Diagramma ER
 
-Il modello concettuale include sette entità principali:
+Entità principali modellate:
 
 - `Passeggero`  
 - `Biglietto`  
@@ -94,10 +87,10 @@ Il modello concettuale include sette entità principali:
 - `Scalo`  
 - `Aereo`  
 
-Realizzato con [dbdiagram.io](https://dbdiagram.io).
+Realizzato con [dbdiagram.io](https://dbdiagram.io)
 
 <p align="center">
-  <img src="DIAGRAMMA__ER_ITA_Airways.png" alt="Diagramma ER" width="700"/>
+  <img src="diagramma_ER_ITA_Airways.png" alt="Diagramma ER" width="700"/>
 </p>
 
 ---
@@ -120,4 +113,3 @@ Realizzato con [dbdiagram.io](https://dbdiagram.io).
 - **Matricola**: 0312201143  
 - **Università**: Università Telematica Pegaso  
 - **Corso di laurea**: Informatica per le Aziende Digitali (L-31)
-
