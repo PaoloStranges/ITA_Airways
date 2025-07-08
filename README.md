@@ -93,7 +93,7 @@ Entità principali modellate:
 Diagramma realizzato con [dbdiagram.io](https://dbdiagram.io)
 
 <p align="center">
-  <img src="diagramma_ER_ITA_Airways.png" alt="Diagramma ER" width="700"/>
+  <img src="DIAGRAMMA__ER_ITA_Airways.png" alt="Diagramma ER" width="700"/>
 </p>
 
 ---
