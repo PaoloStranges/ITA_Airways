@@ -1,4 +1,3 @@
-
 # ITA Airways – Project Work Database
 
 Repository realizzato per il Project Work del Corso di Laurea in *Informatica per le Aziende Digitali (L-31)* – Università Telematica Pegaso.
@@ -9,19 +8,20 @@ Repository realizzato per il Project Work del Corso di Laurea in *Informatica pe
 
 ## 🎯 Obiettivi principali
 
-- Modellazione delle entità principali (Passeggero, Biglietto, Prenotazione, Viaggio, Tratta, Scalo, Aereo)  
-- Gestione completa di prenotazioni e biglietti  
-- Rappresentazione dei voli con scalo tramite tabella intermedia  
-- Interrogazioni SQL utili per gestione operativa e analisi  
+- Modellazione delle entità principali: Passeggero, Biglietto, Prenotazione, Viaggio, Tratta, Scalo, Aereo  
+- Gestione completa del ciclo di vita di una prenotazione e del biglietto  
+- Supporto a voli con scalo tramite tabella intermedia `Scalo`  
+- Query SQL operative per gestione, controllo e analisi  
 
 ---
 
 ## 📂 Contenuto del repository
 
-- `DIAGRAMMA_ER.sql` – File SQL per dbdiagram.io  
-- `diagramma_ER_ITA_Airways.png` – Immagine del diagramma ER  
-- `ITA_Airways_DB_script.sql` – Script SQL completo con struttura, dati e query  
-- `README.md` – Guida tecnica al progetto
+- `DIAGRAMMA_ER.sql` – File SQL per la generazione del diagramma su dbdiagram.io  
+- `diagramma_ER_ITA_Airways.png` – Diagramma ER in formato immagine  
+- `ITA_Airways_DB_script.sql` – Script completo per la creazione del database (DDL + DML)  
+- `ITA_Airways_6_query.sql` – File con le 6 query SQL descritte nel progetto  
+- `README.md` – Guida tecnica e descrizione del progetto
 
 ---
 
@@ -29,7 +29,7 @@ Repository realizzato per il Project Work del Corso di Laurea in *Informatica pe
 
 - PostgreSQL ≥ 15  
 - Tool consigliati: pgAdmin, DBeaver, Azure Data Studio  
-- Ambienti alternativi online:  
+- Ambienti online alternativi per test:  
   - https://dbfiddle.uk  
   - https://extendsclass.com/postgresql-online.html
 
@@ -38,40 +38,43 @@ Repository realizzato per il Project Work del Corso di Laurea in *Informatica pe
 ## 🛠️ Istruzioni per l'uso
 
 1. Importa lo script `ITA_Airways_DB_script.sql` in PostgreSQL  
-2. Esegui lo script per creare schema, vincoli e dati  
-3. Lancia le query SQL dimostrative per testare il sistema
+2. Esegui il file per creare tabelle, relazioni e dati di esempio  
+3. Esegui le query contenute in `ITA_Airways_6_query.sql` per testare il sistema  
+4. Consulta il diagramma ER per comprendere la struttura
 
 ---
 
 ## ✈️ Funzionalità implementate
 
-- Gestione completa di **prenotazioni e biglietti**, con tracciamento dello stato (emesso, confermato, annullato, utilizzato)  
-- Rappresentazione di **voli con scalo**, grazie a una tabella intermedia che mantiene l’ordine degli scali  
-- **Verifica della validità di un biglietto** in base a viaggio, data e stato  
-- Ricerca delle **prenotazioni attive** per data o tratta  
-- Analisi delle **tratte più richieste** sulla base del numero di biglietti emessi  
+- Gestione completa di **prenotazioni e biglietti**, con stati aggiornabili  
+- Rappresentazione dei **voli con scalo** in ordine sequenziale  
+- **Verifica della validità** di un biglietto in tempo reale  
+- Recupero delle **prenotazioni attive per data**  
+- Analisi delle **tratte più richieste** e dei volumi di vendita  
 
 ---
 
 ## ✅ Query SQL dimostrative
 
+Le seguenti query sono incluse nel file `query_dimostrative.sql`:
+
 1. **Biglietti disponibili su una tratta e data**  
-   Recupera i biglietti ancora validi e prenotabili su una determinata tratta in una data specifica.
+   Recupera i biglietti validi per voli in una data specifica (es. FCO → JFK, 15/07/2025).
 
 2. **Storico delle prenotazioni di un passeggero**  
-   Elenca tutte le prenotazioni effettuate da un determinato passeggero, con stato e cronologia.
+   Mostra le prenotazioni effettuate da un passeggero con stato e cronologia.
 
 3. **Verifica validità di un biglietto**  
-   Controlla se un biglietto è ancora valido, già utilizzato o annullato.
+   Controlla se un biglietto è valido, usato o annullato.
 
 4. **Voli con scalo tra due aeroporti**  
-   Restituisce i viaggi che collegano due aeroporti anche attraverso uno o più scali, in ordine sequenziale.
+   Identifica viaggi che collegano due aeroporti tramite almeno uno scalo.
 
 5. **Numero di biglietti emessi per una tratta**  
-   Calcola il totale dei biglietti venduti su una specifica tratta, utile per analisi della domanda.
+   Conta quanti biglietti sono stati venduti su una tratta specifica (diretti e con scalo).
 
 6. **Prenotazioni attive in una certa data**  
-   Mostra tutte le prenotazioni confermate per voli in partenza in una data specifica.
+   Elenca tutte le prenotazioni confermate per voli in partenza in una determinata data.
 
 ---
 
@@ -87,10 +90,10 @@ Entità principali modellate:
 - `Scalo`  
 - `Aereo`  
 
-Realizzato con [dbdiagram.io](https://dbdiagram.io)
+Diagramma realizzato con [dbdiagram.io](https://dbdiagram.io)
 
 <p align="center">
-  <img src="DIAGRAMMA__ER_ITA_Airways.png" alt="Diagramma ER" width="700"/>
+  <img src="diagramma_ER_ITA_Airways.png" alt="Diagramma ER" width="700"/>
 </p>
 
 ---
