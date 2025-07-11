@@ -1,6 +1,5 @@
 -- =====================================================
 -- DATABASE ITA AIRWAYS - PROJECT WORK
--- Versione PostgreSQL con dati ridotti
 -- =====================================================
 
 -- Creazione delle tabelle
@@ -202,5 +201,4 @@ SELECT 'Viaggi totali', COUNT(*) FROM Viaggio
 UNION ALL
 SELECT 'Biglietti totali', COUNT(*) FROM Biglietto
 UNION ALL
-SELECT 'Prenotazioni totali', COUNT(*) FROM Prenotazione
-
+SELECT 'Prenotazioni totali', COUNT(*) FROM Prenotazione;
