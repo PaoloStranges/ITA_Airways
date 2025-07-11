@@ -72,7 +72,7 @@ Repository sviluppato per il Project Work finale del Corso di Laurea in *Informa
 > Realizzato con [dbdiagram.io](https://dbdiagram.io)
 
 <p align="center">
-  <img src="DIAGRAMMA__ER_ITA_Airways..png" alt="Diagramma ER" width="700"/>
+  <img src="DIAGRAMMA_ER__ITA_Airways.png" alt="Diagramma ER" width="700"/>
 </p>
 
 ---
