@@ -5,7 +5,7 @@
 -- Copertura completa: Operazioni base + Performance + Analytics
 -- =====================================================
 
--- 1. Ricerca biglietti disponibili per viaggio (CORE - RICHIESTA SPECIFICA)
+-- 1. Ricerca biglietti disponibili per viaggio
 -- Risponde a: "ricerca biglietti disponibili"
 -- Gestione: prenotazioni + emissione biglietti
 -- INDEXES SUGGERITI: v.data_partenza, b.stato, v.id_viaggio
@@ -29,7 +29,7 @@ GROUP BY v.id_viaggio, v.data_partenza, a.compagnia, a.modello, a.capacita
 ORDER BY v.data_partenza
 LIMIT 100;
 
--- 2. Storico prenotazioni di un cliente (CORE - RICHIESTA SPECIFICA)
+-- 2. Storico prenotazioni di un cliente
 -- Risponde a: "storico prenotazioni di un cliente"
 -- Gestione: prenotazioni + interazione clienti
 -- PARAMETRIZZATA per sicurezza e riutilizzo
@@ -57,7 +57,7 @@ JOIN Aereo a ON v.id_aereo = a.id_aereo
 WHERE p.id_passeggero = $1  -- PARAMETRO: ID del passeggero
 ORDER BY pr.data_prenotazione DESC;
 
--- 3. Verifica validità biglietto (CORE - RICHIESTA SPECIFICA)
+-- 3. Verifica validità biglietto
 -- Risponde a: "verifica validità di un biglietto"
 -- Gestione: validazione biglietti
 -- PARAMETRIZZATA con controlli business avanzati
@@ -86,7 +86,7 @@ JOIN Viaggio v ON b.id_viaggio = v.id_viaggio
 JOIN Aereo a ON v.id_aereo = a.id_aereo
 WHERE b.id_biglietto = $1;  -- PARAMETRO: ID del biglietto
 
--- 4. Percorso completo del viaggio (CORE - GESTIONE TRATTE/SCALI)
+-- 4. Percorso completo del viaggio 
 -- Risponde a: "gestione delle tratte" e "cambi o scali"
 -- Gestione: tratte + scali (requisito dominio trasporti)
 -- OTTIMIZZATA con STRING_AGG per concatenazione percorsi
@@ -113,7 +113,7 @@ GROUP BY v.id_viaggio, v.data_partenza, a.compagnia
 ORDER BY v.data_partenza
 LIMIT 50;
 
--- 5. Passeggeri VIP per spesa totale (CORE - INTERAZIONE CLIENTI)
+-- 5. Passeggeri VIP per spesa totale 
 -- Risponde a: "interazione con i clienti" + "efficienza operativa"
 -- Gestione: clienti + analytics CRM
 -- ANALISI AVANZATA con categorizzazione e loyalty metrics
@@ -149,7 +149,7 @@ HAVING COUNT(b.id_biglietto) >= 1  -- Almeno un viaggio
 ORDER BY totale_speso DESC, viaggi_ultimo_anno DESC
 LIMIT 100;
 
--- 6. Controllo Overbooking (PERFORMANCE - CRITICA BUSINESS)
+-- 6. Controllo Overbooking 
 -- Identifica viaggi con più biglietti venduti della capacità
 -- PREVENZIONE RISCHI operativi e reputazionali
 -- IMPATTO: Evita costi compensazione e problemi customer service
@@ -171,7 +171,7 @@ GROUP BY v.id_viaggio, v.data_partenza, a.compagnia, a.modello, a.capacita
 HAVING COUNT(b.id_biglietto) > a.capacita
 ORDER BY overbooking_count DESC;
 
--- 7. Trend Prenotazioni e Ricavi Mensili (PERFORMANCE - ANALYTICS)
+-- 7. Trend Prenotazioni e Ricavi Mensili 
 -- Analisi performance business nel tempo
 -- BUSINESS INTELLIGENCE per decisioni strategiche
 -- TREND temporali per ottimizzazione ricavi e capacity planning
@@ -190,7 +190,7 @@ WHERE pr.data_prenotazione >= CURRENT_DATE - INTERVAL '24 months'  -- Ultimi 2 a
 GROUP BY DATE_TRUNC('month', pr.data_prenotazione)
 ORDER BY mese DESC;
 
--- 8. Statistiche Generali Sistema (PERFORMANCE - DASHBOARD)
+-- 8. Statistiche Generali Sistema 
 -- Overview completo del sistema per monitoring
 -- METRICHE AGGREGATE per controllo performance globale
 -- SUPPORTO DECISIONALE per management e operations
