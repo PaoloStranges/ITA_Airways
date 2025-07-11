@@ -18,7 +18,7 @@ Repository sviluppato per il Project Work finale del Corso di Laurea in *Informa
 ## 📂 Contenuto del repository
 
 - `DIAGRAMMA_ER.sql` – Script per generare il diagramma ER su dbdiagram.io  
-- `diagramma_ER_ITA_Airways.png` – Diagramma ER in formato immagine  
+- `DIAGRAMMA_ER_ITA_Airways.png` – Diagramma ER in formato immagine  
 - `ITA_Airways_DB_script.sql` – Script SQL completo (DDL + DML)  
 - `ITA_Airways_6_query.sql` – Esempi di query SQL dimostrative  
 - `README.md` – Questo file
@@ -70,7 +70,7 @@ Repository sviluppato per il Project Work finale del Corso di Laurea in *Informa
 > Realizzato con [dbdiagram.io](https://dbdiagram.io)
 
 <p align="center">
-  <img src="diagramma_ER_ITA_Airways.png" alt="Diagramma ER" width="700"/>
+  <img src="DIAGRAMMA_ER_ITA_Airways.png" alt="Diagramma ER" width="700"/>
 </p>
 
 ---
