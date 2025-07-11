@@ -154,22 +154,39 @@ LIMIT 100;
 -- PREVENZIONE RISCHI operativi e reputazionali
 -- IMPATTO: Evita costi compensazione e problemi customer service
 SELECT 
-  v.id_viaggio,
-  v.data_partenza,
-  a.compagnia,
-  a.modello,
-  a.capacita,
-  COUNT(b.id_biglietto) as biglietti_venduti,
-  (COUNT(b.id_biglietto) - a.capacita) as overbooking_count,
-  ROUND((COUNT(b.id_biglietto)::DECIMAL / a.capacita) * 100, 2) as percentuale_vendita
+    v.id_viaggio,
+    v.data_partenza,
+    CONCAT(ap_partenza.citta, ' → ', ap_arrivo.citta) as rotta,
+    a.compagnia,
+    a.modello,
+    a.capacita,
+    COUNT(b.id_biglietto) as biglietti_venduti,
+    (COUNT(b.id_biglietto) - a.capacita) as overbooking_count,
+    ROUND((COUNT(b.id_biglietto)::DECIMAL / a.capacita) * 100, 2) as percentuale_vendita,
+    CASE 
+        WHEN COUNT(b.id_biglietto) > a.capacita THEN '🚨 OVERBOOKING'
+        WHEN COUNT(b.id_biglietto) > (a.capacita * 0.95) THEN '⚠️ RISCHIO ALTO'
+        WHEN COUNT(b.id_biglietto) > (a.capacita * 0.85) THEN '⚡ ATTENZIONE'
+        ELSE '✅ OK'
+    END as stato_allerta
 FROM Viaggio v
 JOIN Aereo a ON v.id_aereo = a.id_aereo
-JOIN Biglietto b ON v.id_viaggio = b.id_viaggio
-WHERE b.stato = 'valido'
-  AND v.data_partenza >= CURRENT_DATE  -- Solo viaggi futuri
-GROUP BY v.id_viaggio, v.data_partenza, a.compagnia, a.modello, a.capacita
-HAVING COUNT(b.id_biglietto) > a.capacita
-ORDER BY overbooking_count DESC;
+JOIN Scalo s ON v.id_viaggio = s.id_viaggio AND s.ordine_scalo = 1
+JOIN Tratta t ON s.id_tratta = t.id_tratta
+JOIN Aeroporto ap_partenza ON t.aeroporto_partenza = ap_partenza.codice
+JOIN Aeroporto ap_arrivo ON t.aeroporto_arrivo = ap_arrivo.codice
+LEFT JOIN Biglietto b ON v.id_viaggio = b.id_viaggio AND b.stato = 'valido'
+WHERE v.data_partenza >= CURRENT_DATE
+GROUP BY v.id_viaggio, v.data_partenza, ap_partenza.citta, ap_arrivo.citta, 
+         a.compagnia, a.modello, a.capacita
+ORDER BY 
+    CASE 
+        WHEN COUNT(b.id_biglietto) > a.capacita THEN 1
+        WHEN COUNT(b.id_biglietto) > (a.capacita * 0.95) THEN 2
+        WHEN COUNT(b.id_biglietto) > (a.capacita * 0.85) THEN 3
+        ELSE 4
+    END,
+    percentuale_vendita DESC;
 
 -- 7. Trend Prenotazioni e Ricavi Mensili 
 -- Analisi performance business nel tempo
