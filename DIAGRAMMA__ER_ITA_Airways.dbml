@@ -1,190 +1,63 @@
-// =====================================================
-// DATABASE ITA AIRWAYS - PROJECT WORK
-// Codice DBML per generazione diagramma ER
-// =====================================================
-
 Project ITA_Airways {
   database_type: 'PostgreSQL'
   Note: 'Sistema di gestione voli e prenotazioni per ITA Airways'
 }
 
-// =====================================================
-// TABELLE PRINCIPALI
-// =====================================================
-
 Table Aeroporto {
-  codice varchar(3) [pk, note: 'Codice IATA aeroporto']
-  citta varchar(50) [not null, note: 'Città dell\'aeroporto']
-  nazione varchar(50) [not null, note: 'Nazione dell\'aeroporto']
-  nome_completo varchar(100) [not null, note: 'Nome completo dell\'aeroporto']
-  
-  Note: 'Anagrafica aeroporti serviti da ITA Airways'
+  codice varchar(3) [pk]
+  citta varchar(50) [not null]
+  nazione varchar(50) [not null]
+  nome_completo varchar(100) [not null]
 }
 
 Table Aereo {
-  id_aereo serial [pk, note: 'ID univoco dell\'aereo']
-  compagnia varchar(50) [not null, note: 'Compagnia aerea']
-  modello varchar(50) [not null, note: 'Modello dell\'aereo']
-  capacita integer [not null, note: 'Capacità passeggeri']
-  consumo_medio_litri_km decimal(5,3) [not null, note: 'Consumo medio per km']
-  
-  Note: 'Flotta aerei di ITA Airways'
+  id_aereo serial [pk]
+  compagnia varchar(50) [not null]
+  modello varchar(50) [not null]
+  capacita integer [not null]
 }
 
 Table Tratta {
-  id_tratta serial [pk, note: 'ID univoco della tratta']
-  aeroporto_partenza varchar(3) [ref: > Aeroporto.codice, not null, note: 'Aeroporto di partenza']
-  aeroporto_arrivo varchar(3) [ref: > Aeroporto.codice, not null, note: 'Aeroporto di arrivo']
-  distanza_km integer [not null, note: 'Distanza in chilometri']
-  
-  Note: 'Tratte disponibili tra aeroporti'
+  id_tratta serial [pk]
+  aeroporto_partenza varchar(3) [ref: > Aeroporto.codice, not null]
+  aeroporto_arrivo varchar(3) [ref: > Aeroporto.codice, not null]
+  distanza_km integer [not null]
 }
 
 Table Viaggio {
-  id_viaggio serial [pk, note: 'ID univoco del viaggio']
-  id_aereo integer [ref: > Aereo.id_aereo, not null, note: 'Aereo utilizzato']
-  data_partenza timestamp [not null, note: 'Data e ora di partenza']
-  
-  Note: 'Viaggi programmati'
+  id_viaggio serial [pk]
+  id_aereo integer [ref: > Aereo.id_aereo, not null]
+  data_partenza timestamp [not null]
 }
 
 Table Scalo {
-  id_scalo serial [pk, note: 'ID univoco dello scalo']
-  id_viaggio integer [ref: > Viaggio.id_viaggio, not null, note: 'Viaggio di riferimento']
-  id_tratta integer [ref: > Tratta.id_tratta, not null, note: 'Tratta dello scalo']
-  ordine_scalo integer [not null, note: 'Ordine dello scalo nel viaggio']
-  
-  Note: 'Scali che compongono un viaggio'
+  id_scalo serial [pk]
+  id_viaggio integer [ref: > Viaggio.id_viaggio, not null]
+  id_tratta integer [ref: > Tratta.id_tratta, not null]
+  ordine_scalo integer [not null]
 }
 
 Table Passeggero {
-  id_passeggero serial [pk, note: 'ID univoco del passeggero']
-  nome varchar(50) [not null, note: 'Nome del passeggero']
-  cognome varchar(50) [not null, note: 'Cognome del passeggero']
-  email varchar(100) [unique, not null, note: 'Email del passeggero']
-  telefono varchar(20) [note: 'Numero di telefono']
-  data_nascita date [note: 'Data di nascita']
-  
-  Note: 'Anagrafica passeggeri'
+  id_passeggero serial [pk]
+  nome varchar(50) [not null]
+  cognome varchar(50) [not null]
+  email varchar(100) [unique, not null]
 }
 
 Table Biglietto {
-  id_biglietto serial [pk, note: 'ID univoco del biglietto']
-  id_passeggero integer [ref: > Passeggero.id_passeggero, not null, note: 'Passeggero proprietario']
-  id_viaggio integer [ref: > Viaggio.id_viaggio, not null, note: 'Viaggio prenotato']
-  classe varchar(10) [not null, note: 'Classe di servizio: economy, business, first']
-  prezzo decimal(8,2) [not null, note: 'Prezzo del biglietto']
-  stato varchar(15) [not null, note: 'Stato: valido, cancellato, utilizzato']
-  data_emissione timestamp [not null, note: 'Data di emissione']
-  
-  Note: 'Biglietti emessi per i viaggi'
+  id_biglietto serial [pk]
+  id_passeggero integer [ref: > Passeggero.id_passeggero, not null]
+  id_viaggio integer [ref: > Viaggio.id_viaggio, not null]
+  classe varchar(10) [not null]
+  prezzo decimal(8,2) [not null]
+  stato varchar(15) [not null]
+  data_emissione timestamp [not null]
 }
 
 Table Prenotazione {
-  id_prenotazione serial [pk, note: 'ID univoco della prenotazione']
-  id_biglietto integer [ref: - Biglietto.id_biglietto, not null, note: 'Biglietto prenotato']
-  data_prenotazione timestamp [not null, note: 'Data della prenotazione']
-  metodo_pagamento varchar(20) [not null, note: 'Metodo: carta_credito, bonifico, paypal, contanti']
-  stato varchar(15) [not null, note: 'Stato: confermata, cancellata, in_attesa']
-  
-  Note: 'Prenotazioni effettuate'
+  id_prenotazione serial [pk]
+  id_biglietto integer [ref: - Biglietto.id_biglietto, not null]
+  data_prenotazione timestamp [not null]
+  metodo_pagamento varchar(20) [not null]
+  stato varchar(15) [not null]
 }
-
-Table CheckIn {
-  id_checkin serial [pk, note: 'ID univoco del check-in']
-  id_biglietto integer [ref: - Biglietto.id_biglietto, not null, note: 'Biglietto per il check-in']
-  data_checkin timestamp [not null, note: 'Data e ora del check-in']
-  posto_assegnato varchar(5) [note: 'Posto assegnato (es: 12A)']
-  
-  Note: 'Check-in effettuati'
-}
-
-Table Bagaglio {
-  id_bagaglio serial [pk, note: 'ID univoco del bagaglio']
-  id_checkin integer [ref: > CheckIn.id_checkin, not null, note: 'Check-in di riferimento']
-  peso_kg decimal(5,2) [not null, note: 'Peso in chilogrammi']
-  tipo varchar(10) [not null, note: 'Tipo: mano, stiva, speciale']
-  
-  Note: 'Bagagli registrati'
-}
-
-// =====================================================
-// INDICI
-// =====================================================
-
-TableGroup "Indici di Performance" {
-  Viaggio
-  Biglietto
-  Prenotazione
-}
-
-// =====================================================
-// ENUM PER VALORI CONTROLLATI
-// =====================================================
-
-Enum classe_servizio {
-  economy
-  business
-  first
-}
-
-Enum stato_biglietto {
-  valido
-  cancellato
-  utilizzato
-}
-
-Enum metodo_pagamento {
-  carta_credito
-  bonifico
-  paypal
-  contanti
-}
-
-Enum stato_prenotazione {
-  confermata
-  cancellata
-  in_attesa
-}
-
-Enum tipo_bagaglio {
-  mano
-  stiva
-  speciale
-}
-
-// =====================================================
-// DOCUMENTAZIONE RELAZIONI
-// =====================================================
-
-/*'''
-note relazioni_principali: 
-RELAZIONI PRINCIPALI:
-
-1. AEROPORTO -> TRATTA (partenza/arrivo)
-   - Ogni tratta ha un aeroporto di partenza e uno di arrivo
-   - Relazione 1:N per entrambi i casi
-
-2. AEREO -> VIAGGIO
-   - Un aereo può effettuare molti viaggi
-   - Relazione 1:N
-
-3. VIAGGIO -> SCALO -> TRATTA
-   - Un viaggio può essere composto da più scali
-   - Ogni scalo corrisponde a una tratta
-   - Relazione N:M tra VIAGGIO e TRATTA attraverso SCALO
-
-4. PASSEGGERO -> BIGLIETTO -> VIAGGIO
-   - Un passeggero può avere più biglietti
-   - Un viaggio può avere molti biglietti
-   - Relazione N:M tra PASSEGGERO e VIAGGIO attraverso BIGLIETTO
-
-5. BIGLIETTO -> PRENOTAZIONE (1:1)
-   - Ogni biglietto ha una prenotazione
-
-6. BIGLIETTO -> CHECKIN (1:1)
-   - Un biglietto può avere un check-in
-
-7. CHECKIN -> BAGAGLIO (1:N)
-   - Un check-in può avere più bagagli
-'''*/
