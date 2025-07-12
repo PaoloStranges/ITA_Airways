@@ -54,7 +54,7 @@ JOIN Biglietto b ON p.id_passeggero = b.id_passeggero
 JOIN Prenotazione pr ON pr.id_biglietto = b.id_biglietto
 JOIN Viaggio v ON b.id_viaggio = v.id_viaggio
 JOIN Aereo a ON v.id_aereo = a.id_aereo
-WHERE p.id_passeggero = $1  -- PARAMETRO: ID del passeggero
+WHERE p.id_passeggero = 1  -- PARAMETRO: ID del passeggero
 ORDER BY pr.data_prenotazione DESC;
 
 -- 3. Verifica validità biglietto
@@ -84,7 +84,7 @@ FROM Biglietto b
 JOIN Passeggero p ON b.id_passeggero = p.id_passeggero
 JOIN Viaggio v ON b.id_viaggio = v.id_viaggio
 JOIN Aereo a ON v.id_aereo = a.id_aereo
-WHERE b.id_biglietto = $1;  -- PARAMETRO: ID del biglietto
+WHERE b.id_biglietto = 1;  -- PARAMETRO: ID del biglietto
 
 -- 4. Percorso completo del viaggio 
 -- Risponde a: "gestione delle tratte" e "cambi o scali"
