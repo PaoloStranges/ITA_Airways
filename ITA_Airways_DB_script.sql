@@ -141,14 +141,14 @@ INSERT INTO Prenotazione (id_biglietto, data_prenotazione, metodo_pagamento, sta
 (3, '2025-06-17 09:15:00', 'paypal', 'confermata'),
 (4, '2025-06-18 16:30:00', 'bonifico', 'confermata');
 
--- Aggiungiamo altri aeroporti per creare percorsi con scali
+-- Inserimento altri aeroporti per creare percorsi con scali
 INSERT INTO Aeroporto (codice, citta, nazione, nome_completo) VALUES
 ('LHR', 'Londra', 'Regno Unito', 'Aeroporto di Londra Heathrow'),
 ('BCN', 'Barcellona', 'Spagna', 'Aeroporto di Barcellona El Prat'),
 ('FRA', 'Francoforte', 'Germania', 'Aeroporto di Francoforte'),
 ('VCE', 'Venezia', 'Italia', 'Aeroporto Marco Polo di Venezia');
 
--- Aggiungiamo tratte per creare percorsi con scali
+-- Inserimento tratte per creare percorsi con scali
 INSERT INTO Tratta (aeroporto_partenza, aeroporto_arrivo, distanza_km) VALUES
 -- Tratte per viaggio con scalo Roma → Milano → Londra
 ('FCO', 'MXP', 477),
@@ -163,13 +163,13 @@ INSERT INTO Tratta (aeroporto_partenza, aeroporto_arrivo, distanza_km) VALUES
 ('NAP', 'FCO', 225),
 ('FCO', 'CDG', 1105);
 
--- Aggiungiamo viaggi con scali
+-- Inserimento viaggi con scali
 INSERT INTO Viaggio (id_aereo, data_partenza) VALUES
 (2, '2025-07-20 10:00:00'),  -- Viaggio con 1 scalo: Roma → Milano → Londra
 (3, '2025-07-21 08:30:00'),  -- Viaggio con 2 scali: Milano → Venezia → Francoforte → Barcellona
 (1, '2025-07-22 16:45:00');  -- Viaggio con 1 scalo: Napoli → Roma → Parigi
 
--- Aggiungiamo scali per questi viaggi
+-- Inserimento scali per questi viaggi
 -- Viaggio 5: Roma → Milano → Londra (1 scalo a Milano)
 INSERT INTO Scalo (id_viaggio, id_tratta, ordine_scalo) VALUES
 (5, 5, 1),  -- Roma → Milano (prima tratta)
@@ -186,7 +186,7 @@ INSERT INTO Scalo (id_viaggio, id_tratta, ordine_scalo) VALUES
 (7, 10, 1), -- Napoli → Roma (prima tratta)
 (7, 11, 2); -- Roma → Parigi (seconda tratta)
 
--- Aggiungiamo alcuni passeggeri e biglietti per questi viaggi
+-- Inserimento passeggeri e biglietti per questi viaggi
 INSERT INTO Passeggero (nome, cognome, email, telefono, data_nascita) VALUES
 ('Sofia', 'Romano', 'sofia.romano@email.com', '+39 335 5678901', '1988-12-03'),
 ('Matteo', 'Ferrari', 'matteo.ferrari@email.com', '+39 346 6789012', '1995-08-17'),
