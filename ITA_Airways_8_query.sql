@@ -91,25 +91,50 @@ WHERE b.id_biglietto = 1;  -- PARAMETRO: ID del biglietto
 -- Gestione: tratte + scali (requisito dominio trasporti)
 -- OTTIMIZZATA con STRING_AGG per concatenazione percorsi
 SELECT 
-  v.id_viaggio,
-  v.data_partenza,
-  a.compagnia,
-  COUNT(s.id_scalo) AS numero_scali,
-  COALESCE(
-    STRING_AGG(
-      ap1.citta || ' (' || t.aeroporto_partenza || ') → ' || ap2.citta || ' (' || t.aeroporto_arrivo || ')', 
-      ' | ' ORDER BY s.ordine_scalo
-    ),
-    'Nessun percorso definito'
-  ) AS percorso,
-  SUM(t.distanza_km) AS distanza_totale_km
+  v.id_viaggio, v.data_partenza, a.compagnia, a.modello, a.capacita,
+  p.citta || ' (' || p.codice || ')' AS citta_partenza,
+  r.citta || ' (' || r.codice || ')' AS citta_arrivo,
+  GREATEST(COUNT(s.id_scalo) - 1, 0) AS numero_scali_intermedi,
+  COALESCE(STRING_AGG(
+    CASE WHEN s.ordine_scalo > 1 THEN 'Scalo ' || (s.ordine_scalo - 1) || ': ' || ap2.citta || ' (' || ap2.codice || ') - ' || ap2.nome_completo END,
+    ' | ' ORDER BY s.ordine_scalo
+  ), 'Volo diretto (nessun scalo)') AS scali_intermedi,
+  STRING_AGG(
+    'Tratta ' || s.ordine_scalo || ': ' || ap1.citta || ' (' || ap1.codice || ') → ' || ap2.citta || ' (' || ap2.codice || ') - ' || t.distanza_km || ' km',
+    ' | ' ORDER BY s.ordine_scalo
+  ) AS percorso_dettagliato,
+  SUM(t.distanza_km) AS distanza_totale_km,
+  ROUND(SUM(t.distanza_km * a.consumo_medio_litri_km), 2) AS consumo_carburante_stimato_litri,
+  STRING_AGG(
+    DISTINCT ap1.citta || CASE WHEN s.ordine_scalo = 1 THEN ' (partenza)' ELSE '' END,
+    ' → ' ORDER BY ap1.citta || CASE WHEN s.ordine_scalo = 1 THEN ' (partenza)' ELSE '' END
+  ) AS citta_toccate
 FROM Viaggio v
 JOIN Aereo a ON v.id_aereo = a.id_aereo
 LEFT JOIN Scalo s ON v.id_viaggio = s.id_viaggio
 LEFT JOIN Tratta t ON s.id_tratta = t.id_tratta
 LEFT JOIN Aeroporto ap1 ON t.aeroporto_partenza = ap1.codice
 LEFT JOIN Aeroporto ap2 ON t.aeroporto_arrivo = ap2.codice
-GROUP BY v.id_viaggio, v.data_partenza, a.compagnia
+LEFT JOIN (
+  SELECT s1.id_viaggio, ap.codice, ap.citta
+  FROM Scalo s1
+  JOIN Tratta t1 ON s1.id_tratta = t1.id_tratta
+  JOIN Aeroporto ap ON t1.aeroporto_partenza = ap.codice
+  WHERE s1.ordine_scalo = 1
+) p ON v.id_viaggio = p.id_viaggio
+LEFT JOIN (
+  SELECT s2.id_viaggio, ap.codice, ap.citta
+  FROM Scalo s2
+  JOIN Tratta t2 ON s2.id_tratta = t2.id_tratta
+  JOIN Aeroporto ap ON t2.aeroporto_arrivo = ap.codice
+  WHERE s2.ordine_scalo = (
+    SELECT MAX(ordine_scalo) FROM Scalo s3 WHERE s3.id_viaggio = s2.id_viaggio
+  )
+) r ON v.id_viaggio = r.id_viaggio
+GROUP BY 
+  v.id_viaggio, v.data_partenza,
+  a.compagnia, a.modello, a.capacita, a.consumo_medio_litri_km,
+  p.citta, p.codice, r.citta, r.codice
 ORDER BY v.data_partenza
 LIMIT 50;
 
