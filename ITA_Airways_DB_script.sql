@@ -202,6 +202,30 @@ INSERT INTO Prenotazione (id_biglietto, data_prenotazione, metodo_pagamento, sta
 (6, '2025-07-02 14:30:00', 'paypal', 'confermata'),
 (7, '2025-07-03 11:15:00', 'bonifico', 'confermata');
 
+-- Inserimento 148 biglietti extra per causare overbooking su id_viaggio = 1
+DO $$
+BEGIN
+    FOR i IN 1..148 LOOP
+        INSERT INTO Biglietto (
+            id_passeggero,
+            id_viaggio,
+            classe,
+            prezzo,
+            stato,
+            data_emissione
+        )
+        VALUES (
+            1,               -- id_passeggero già esistente (Marco Rossi)
+            1,               -- id_viaggio (volo Roma → Milano)
+            'economy',
+            0.00,
+            'valido',
+            NOW()
+        );
+    END LOOP;
+END$$;
+
+
 -- =====================================================
 -- INDICI PER OTTIMIZZAZIONE
 -- =====================================================
