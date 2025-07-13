@@ -141,6 +141,67 @@ INSERT INTO Prenotazione (id_biglietto, data_prenotazione, metodo_pagamento, sta
 (3, '2025-06-17 09:15:00', 'paypal', 'confermata'),
 (4, '2025-06-18 16:30:00', 'bonifico', 'confermata');
 
+-- Aggiungiamo altri aeroporti per creare percorsi con scali
+INSERT INTO Aeroporto (codice, citta, nazione, nome_completo) VALUES
+('LHR', 'Londra', 'Regno Unito', 'Aeroporto di Londra Heathrow'),
+('BCN', 'Barcellona', 'Spagna', 'Aeroporto di Barcellona El Prat'),
+('FRA', 'Francoforte', 'Germania', 'Aeroporto di Francoforte'),
+('VCE', 'Venezia', 'Italia', 'Aeroporto Marco Polo di Venezia');
+
+-- Aggiungiamo tratte per creare percorsi con scali
+INSERT INTO Tratta (aeroporto_partenza, aeroporto_arrivo, distanza_km) VALUES
+-- Tratte per viaggio con scalo Roma → Milano → Londra
+('FCO', 'MXP', 477),
+('MXP', 'LHR', 950),
+
+-- Tratte per viaggio con doppio scalo Milano → Venezia → Francoforte → Barcellona
+('MXP', 'VCE', 250),
+('VCE', 'FRA', 750),
+('FRA', 'BCN', 1100),
+
+-- Tratte per viaggio Napoli → Roma → Parigi
+('NAP', 'FCO', 225),
+('FCO', 'CDG', 1105);
+
+-- Aggiungiamo viaggi con scali
+INSERT INTO Viaggio (id_aereo, data_partenza) VALUES
+(2, '2025-07-20 10:00:00'),  -- Viaggio con 1 scalo: Roma → Milano → Londra
+(3, '2025-07-21 08:30:00'),  -- Viaggio con 2 scali: Milano → Venezia → Francoforte → Barcellona
+(1, '2025-07-22 16:45:00');  -- Viaggio con 1 scalo: Napoli → Roma → Parigi
+
+-- Aggiungiamo scali per questi viaggi
+-- Viaggio 5: Roma → Milano → Londra (1 scalo a Milano)
+INSERT INTO Scalo (id_viaggio, id_tratta, ordine_scalo) VALUES
+(5, 5, 1),  -- Roma → Milano (prima tratta)
+(5, 6, 2);  -- Milano → Londra (seconda tratta)
+
+-- Viaggio 6: Milano → Venezia → Francoforte → Barcellona (2 scali: Venezia e Francoforte)
+INSERT INTO Scalo (id_viaggio, id_tratta, ordine_scalo) VALUES
+(6, 7, 1),  -- Milano → Venezia (prima tratta)
+(6, 8, 2),  -- Venezia → Francoforte (seconda tratta)
+(6, 9, 3);  -- Francoforte → Barcellona (terza tratta)
+
+-- Viaggio 7: Napoli → Roma → Parigi (1 scalo a Roma)
+INSERT INTO Scalo (id_viaggio, id_tratta, ordine_scalo) VALUES
+(7, 10, 1), -- Napoli → Roma (prima tratta)
+(7, 11, 2); -- Roma → Parigi (seconda tratta)
+
+-- Aggiungiamo alcuni passeggeri e biglietti per questi viaggi
+INSERT INTO Passeggero (nome, cognome, email, telefono, data_nascita) VALUES
+('Sofia', 'Romano', 'sofia.romano@email.com', '+39 335 5678901', '1988-12-03'),
+('Matteo', 'Ferrari', 'matteo.ferrari@email.com', '+39 346 6789012', '1995-08-17'),
+('Elena', 'Conte', 'elena.conte@email.com', '+39 333 7890123', '1982-04-25');
+
+INSERT INTO Biglietto (id_passeggero, id_viaggio, classe, prezzo, stato, data_emissione) VALUES
+(5, 5, 'business', 680.00, 'valido', '2025-07-01 09:00:00'),  -- Roma → Milano → Londra
+(6, 6, 'economy', 420.00, 'valido', '2025-07-02 14:30:00'),   -- Milano → Venezia → Francoforte → Barcellona
+(7, 7, 'first', 950.00, 'valido', '2025-07-03 11:15:00');     -- Napoli → Roma → Parigi
+
+INSERT INTO Prenotazione (id_biglietto, data_prenotazione, metodo_pagamento, stato) VALUES
+(5, '2025-07-01 09:00:00', 'carta_credito', 'confermata'),
+(6, '2025-07-02 14:30:00', 'paypal', 'confermata'),
+(7, '2025-07-03 11:15:00', 'bonifico', 'confermata');
+
 -- =====================================================
 -- INDICI PER OTTIMIZZAZIONE
 -- =====================================================
