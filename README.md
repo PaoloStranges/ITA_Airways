@@ -69,10 +69,10 @@ Repository sviluppato per il Project Work finale del Corso di Laurea in *Informa
 
 ## 📊 Diagramma ER
 
-> Realizzato con [dbdiagram.io](https://dbdiagram.io)
+> Realizzato con [draw.io](https://draw.io)
 
 <p align="center">
-  <img src="DIAGRAMMA_ER__ITA_Airways.png" alt="Diagramma ER" width="700"/>
+  <img src="DIAGRAMMA_ER_ITA__Airways.png" alt="Diagramma ER" width="700"/>
 </p>
 
 ---
