@@ -126,26 +126,36 @@ ORDER BY v.data_partenza;
 -- Obiettivo: Identificare i clienti più importanti per valore
 -- Utilizzo: Marketing mirato e programmi fedeltà
 SELECT 
-    p.nome || ' ' || p.cognome AS passeggero,
-    p.email,
-    COUNT(b.id_biglietto) AS viaggi_totali,
-    SUM(b.prezzo) AS totale_speso,
-    ROUND(AVG(b.prezzo), 2) AS prezzo_medio,
-    MIN(b.prezzo) AS prezzo_minimo,
-    MAX(b.prezzo) AS prezzo_massimo,
-    CASE
-        WHEN SUM(b.prezzo) >= 2000 THEN 'PLATINUM'
-        WHEN SUM(b.prezzo) >= 1000 THEN 'GOLD'
-        WHEN SUM(b.prezzo) >= 500 THEN 'SILVER'
-        ELSE 'STANDARD'
-    END AS livello_cliente
+  p.nome || ' ' || p.cognome AS passeggero,
+  p.email,
+  COUNT(b.id_biglietto) AS viaggi_totali,
+  COUNT(CASE WHEN v.data_partenza >= CURRENT_DATE - INTERVAL '12 months' THEN 1 END) AS viaggi_ultimo_anno,
+  SUM(b.prezzo) AS totale_speso,
+  ROUND(AVG(b.prezzo), 2) AS prezzo_medio,
+  MIN(b.prezzo) AS prezzo_minimo,
+  MAX(b.prezzo) AS prezzo_massimo,
+  CASE
+    WHEN SUM(b.prezzo) >= 2000 THEN 'PLATINUM'
+    WHEN SUM(b.prezzo) >= 1000 THEN 'GOLD'
+    WHEN SUM(b.prezzo) >= 500 THEN 'SILVER'
+    ELSE 'STANDARD'
+  END AS livello_cliente,
+  CASE 
+    WHEN COUNT(CASE WHEN v.data_partenza >= CURRENT_DATE - INTERVAL '12 months' THEN 1 END) >= 10 THEN 'FREQUENT FLYER'
+    WHEN COUNT(CASE WHEN v.data_partenza >= CURRENT_DATE - INTERVAL '12 months' THEN 1 END) >= 5 THEN 'REGULAR'
+    ELSE 'OCCASIONALE'
+  END AS frequenza_viaggi,
+  MIN(pr.data_prenotazione) AS prima_prenotazione,
+  MAX(pr.data_prenotazione) AS ultima_prenotazione
 FROM Passeggero p
 JOIN Biglietto b ON p.id_passeggero = b.id_passeggero
 JOIN Viaggio v ON b.id_viaggio = v.id_viaggio
+JOIN Prenotazione pr ON b.id_prenotazione = pr.id_prenotazione  -- CORRETTO: FK da Biglietto a Prenotazione
 WHERE b.stato = 'valido'
 GROUP BY p.id_passeggero, p.nome, p.cognome, p.email
 HAVING COUNT(b.id_biglietto) >= 1
-ORDER BY totale_speso DESC;
+ORDER BY totale_speso DESC, viaggi_ultimo_anno DESC
+LIMIT 100;
 
 -- =====================================================
 -- Query 6: Controllo situazioni di overbooking
