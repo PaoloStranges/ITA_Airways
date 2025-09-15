@@ -65,33 +65,29 @@ ORDER BY pr.data_prenotazione DESC;
 -- Obiettivo: Controllare lo stato e la validità di un biglietto
 -- Utilizzo: Check-in e controllo accessi
 SELECT 
-    b.id_biglietto,
-    p.nome || ' ' || p.cognome AS passeggero,
-    p.email,
-    b.stato,
-    b.aeroporto_partenza || ' → ' || b.aeroporto_arrivo AS tratta,
-    ap1.citta AS citta_partenza,
-    ap2.citta AS citta_arrivo,
-    v.data_partenza,
-    a.compagnia,
-    CASE 
-        WHEN b.stato = 'valido' AND v.data_partenza > NOW() THEN 'Valido'
-        WHEN b.stato = 'valido' AND v.data_partenza <= NOW() THEN 'Scaduto'
-        WHEN b.stato = 'cancellato' THEN 'Cancellato'
-        ELSE 'Non valido'
-    END AS esito,
-    CASE 
-        WHEN v.data_partenza > NOW() THEN 
-            EXTRACT(DAYS FROM (v.data_partenza - NOW()))::TEXT || ' giorni al volo'
-        ELSE 'Volo già partito'
-    END AS tempo_rimanente
+  b.id_biglietto,
+  p.nome || ' ' || p.cognome AS passeggero,
+  p.email,
+  b.stato,
+  v.id_viaggio,
+  v.data_partenza,
+  a.compagnia,
+  CASE 
+    WHEN b.stato = 'valido' AND v.data_partenza > CURRENT_TIMESTAMP THEN '✓ Valido'
+    WHEN b.stato = 'valido' AND v.data_partenza <= CURRENT_TIMESTAMP THEN '⚠ Scaduto'
+    WHEN b.stato = 'cancellato' THEN '✗ Cancellato'
+    ELSE '✗ Non valido'
+  END AS esito,
+  CASE 
+    WHEN v.data_partenza > CURRENT_TIMESTAMP THEN 
+      EXTRACT(DAYS FROM (v.data_partenza - CURRENT_TIMESTAMP)) || ' giorni al volo'
+    ELSE 'Volo già partito'
+  END AS tempo_rimanente
 FROM Biglietto b
 JOIN Passeggero p ON b.id_passeggero = p.id_passeggero
 JOIN Viaggio v ON b.id_viaggio = v.id_viaggio
 JOIN Aereo a ON v.id_aereo = a.id_aereo
-JOIN Aeroporto ap1 ON b.aeroporto_partenza = ap1.codice
-JOIN Aeroporto ap2 ON b.aeroporto_arrivo = ap2.codice
-WHERE b.id_biglietto = 1;  -- Parametro: ID del biglietto
+WHERE b.id_biglietto = 1;  -- PARAMETRO: ID del biglietto
 
 -- =====================================================
 -- Query 4: Percorso completo del viaggio con scali
@@ -99,26 +95,52 @@ WHERE b.id_biglietto = 1;  -- Parametro: ID del biglietto
 -- Obiettivo: Visualizzare il percorso dettagliato con eventuali scali
 -- Utilizzo: Informazioni per passeggeri e pianificazione voli
 SELECT 
-    v.id_viaggio,
-    v.data_partenza,
-    a.compagnia,
-    a.modello,
-    COUNT(s.id_scalo) AS numero_tratte,
-    MIN(ap1.citta) AS citta_partenza,
-    MAX(ap2.citta) AS citta_arrivo,
-    SUM(t.distanza_km) AS distanza_totale_km,
-    STRING_AGG(
-        ap1.citta || ' → ' || ap2.citta,
-        ' | ' ORDER BY s.ordine_scalo
-    ) AS percorso_dettagliato
+  v.id_viaggio, v.data_partenza, a.compagnia, a.modello, a.capacita,
+  p.citta || ' (' || p.codice || ')' AS citta_partenza,
+  r.citta || ' (' || r.codice || ')' AS citta_arrivo,
+  GREATEST(COUNT(s.id_scalo) - 1, 0) AS numero_scali_intermedi,
+  COALESCE(STRING_AGG(
+    CASE WHEN s.ordine_scalo > 1 THEN 'Scalo ' || (s.ordine_scalo - 1) || ': ' || ap2.citta || ' (' || ap2.codice || ') - ' || ap2.nome_completo END,
+    ' | ' ORDER BY s.ordine_scalo
+  ), 'Volo diretto (nessun scalo)') AS scali_intermedi,
+  STRING_AGG(
+    'Tratta ' || s.ordine_scalo || ': ' || ap1.citta || ' (' || ap1.codice || ') → ' || ap2.citta || ' (' || ap2.codice || ') - ' || t.distanza_km || ' km',
+    ' | ' ORDER BY s.ordine_scalo
+  ) AS percorso_dettagliato,
+  SUM(t.distanza_km) AS distanza_totale_km,
+  ROUND(SUM(t.distanza_km * a.consumo_medio_litri_km), 2) AS consumo_carburante_stimato_litri,
+  STRING_AGG(
+    DISTINCT ap1.citta || CASE WHEN s.ordine_scalo = 1 THEN ' (partenza)' ELSE '' END,
+    ' → ' ORDER BY ap1.citta || CASE WHEN s.ordine_scalo = 1 THEN ' (partenza)' ELSE '' END
+  ) AS citta_toccate
 FROM Viaggio v
 JOIN Aereo a ON v.id_aereo = a.id_aereo
 LEFT JOIN Scalo s ON v.id_viaggio = s.id_viaggio
 LEFT JOIN Tratta t ON s.id_tratta = t.id_tratta
 LEFT JOIN Aeroporto ap1 ON t.aeroporto_partenza = ap1.codice
 LEFT JOIN Aeroporto ap2 ON t.aeroporto_arrivo = ap2.codice
-GROUP BY v.id_viaggio, v.data_partenza, a.compagnia, a.modello
-ORDER BY v.data_partenza;
+LEFT JOIN (
+  SELECT s1.id_viaggio, ap.codice, ap.citta
+  FROM Scalo s1
+  JOIN Tratta t1 ON s1.id_tratta = t1.id_tratta
+  JOIN Aeroporto ap ON t1.aeroporto_partenza = ap.codice
+  WHERE s1.ordine_scalo = 1
+) p ON v.id_viaggio = p.id_viaggio
+LEFT JOIN (
+  SELECT s2.id_viaggio, ap.codice, ap.citta
+  FROM Scalo s2
+  JOIN Tratta t2 ON s2.id_tratta = t2.id_tratta
+  JOIN Aeroporto ap ON t2.aeroporto_arrivo = ap.codice
+  WHERE s2.ordine_scalo = (
+    SELECT MAX(ordine_scalo) FROM Scalo s3 WHERE s3.id_viaggio = s2.id_viaggio
+  )
+) r ON v.id_viaggio = r.id_viaggio
+GROUP BY 
+  v.id_viaggio, v.data_partenza,
+  a.compagnia, a.modello, a.capacita, a.consumo_medio_litri_km,
+  p.citta, p.codice, r.citta, r.codice
+ORDER BY v.data_partenza
+LIMIT 50;
 
 -- =====================================================
 -- Query 5: Passeggeri VIP per spesa totale
@@ -215,17 +237,17 @@ SELECT
     'Passeggeri Totali' AS metrica,
     COUNT(DISTINCT p.id_passeggero)::TEXT AS valore
 FROM Passeggero p
-
+ 
 UNION ALL
-
+ 
 SELECT 
     'Viaggi Attivi' AS metrica,
     COUNT(DISTINCT v.id_viaggio)::TEXT AS valore
 FROM Viaggio v
 WHERE v.data_partenza >= '2025-07-01'  -- Sostituito CURRENT_DATE per test
-
+ 
 UNION ALL
-
+ 
 SELECT 
     'Biglietti Venduti (Ultimo Anno)' AS metrica,
     COUNT(DISTINCT b.id_biglietto)::TEXT AS valore
@@ -233,9 +255,9 @@ FROM Biglietto b
 JOIN Viaggio v ON b.id_viaggio = v.id_viaggio
 WHERE v.data_partenza >= '2024-07-01'  -- Data fissa per simulare ultimo anno
     AND b.stato = 'valido'
-
+ 
 UNION ALL
-
+ 
 SELECT 
     'Ricavi Totali (Ultimo Anno)' AS metrica,
     COALESCE(SUM(b.prezzo), 0)::MONEY::TEXT AS valore
@@ -243,9 +265,9 @@ FROM Biglietto b
 JOIN Viaggio v ON b.id_viaggio = v.id_viaggio
 WHERE v.data_partenza >= '2024-07-01'  -- Data fissa per simulare ultimo anno
     AND b.stato = 'valido'
-
+ 
 UNION ALL
-
+ 
 SELECT 
     'Tasso Occupazione Medio' AS metrica,
     ROUND(AVG(occupazione.percentuale), 2)::TEXT || '%' AS valore
@@ -258,3 +280,4 @@ FROM (
     WHERE v.data_partenza >= '2025-04-01'  -- Ultimi 3 mesi simulati
     GROUP BY v.id_viaggio, a.capacita
 ) occupazione;
+
