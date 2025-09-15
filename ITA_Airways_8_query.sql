@@ -32,27 +32,31 @@ ORDER BY v.data_partenza;
 -- Utilizzo: Servizio clienti e gestione CRM
 -- Nota: Sfrutta i nuovi attributi aeroporto_partenza/arrivo per accesso diretto
 SELECT 
-  p.nome || ' ' || p.cognome AS passeggero,
-  p.email,
-  pr.id_prenotazione,
-  pr.data_prenotazione,
-  pr.metodo_pagamento,
-  pr.stato AS stato_prenotazione,
-  b.stato AS stato_biglietto,
-  b.classe,
-  b.prezzo,
-  v.data_partenza,
-  a.compagnia,
-  CASE 
-    WHEN v.data_partenza > CURRENT_TIMESTAMP THEN 'FUTURO'
-    WHEN v.data_partenza <= CURRENT_TIMESTAMP THEN 'PASSATO'
-  END AS categoria_viaggio
+    p.nome || ' ' || p.cognome AS passeggero,
+    p.email,
+    pr.id_prenotazione,
+    pr.data_prenotazione,
+    pr.metodo_pagamento,
+    pr.stato AS stato_prenotazione,
+    b.stato AS stato_biglietto,
+    b.classe,
+    b.prezzo,
+    v.data_partenza,
+    ap1.citta || ' (' || b.aeroporto_partenza || ')' AS partenza,
+    ap2.citta || ' (' || b.aeroporto_arrivo || ')' AS arrivo,
+    a.compagnia,
+    CASE 
+        WHEN v.data_partenza > NOW() THEN 'FUTURO'
+        ELSE 'PASSATO'
+    END AS categoria_viaggio
 FROM Passeggero p
 JOIN Biglietto b ON p.id_passeggero = b.id_passeggero
-JOIN Prenotazione pr ON pr.id_biglietto = b.id_biglietto
+JOIN Prenotazione pr ON pr.id_prenotazione = b.id_prenotazione
 JOIN Viaggio v ON b.id_viaggio = v.id_viaggio
 JOIN Aereo a ON v.id_aereo = a.id_aereo
-WHERE p.id_passeggero = 1  -- PARAMETRO: ID del passeggero
+JOIN Aeroporto ap1 ON b.aeroporto_partenza = ap1.codice
+JOIN Aeroporto ap2 ON b.aeroporto_arrivo = ap2.codice
+WHERE p.id_passeggero = 1  -- Parametro: ID del passeggero
 ORDER BY pr.data_prenotazione DESC;
 
 -- =====================================================
